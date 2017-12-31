@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        {% if current_user.is_authenticated %}
+        <div class="row">
+            <a class="col-xs-4"><img title="{{ current_user.username }}" class="avatar-large" src="{{ current_user.avatar_url }}"></title></a>
+            <div class="col-xs-8">
+                <p class="list-post-title"><strong>{{ current_user.username }}</strong></p>
+                <p class="list-meta" style="margin-top: 1em">第 {{ current_user.id }}个用户</p>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1em">
+            <div class="col-xs-4">
+                <a href="" class="btn btn-block"> <span class="glyphicon glyphicon-home"></span> 主页</a>
+            </div>
+
+            <div class="col-xs-4">
+                <a href="{{ url_for('auth.change_password') }}" class="btn btn-block"> <span class="glyphicon glyphicon-cog"></span> 设置</a>
+            </div>
+
+            <div class="col-xs-4">
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-block"> <span class="glyphicon glyphicon-log-out"></span> 登出</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="list-post-title text-center"><strong>Python社区</strong></div>
+        <div class="row" style="margin: 1em 0 0 1em">
+            <p class="list-meta">Welcome to Python社区</p>
+            <p class="list-meta">这里可以讨论任何关于技术的东西</p>
+        </div> 
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,36 @@
+{% extends 'base_sidebar.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+创建话题
+{% endblock %}
+
+{% block left %}
+{% include 'auth/panel.html' %}
+{% endblock %}
+
+{% block right %}
+<div class="panel panel-default">
+    <div class="panel-heading title-breadcrumb">
+        <a href="{{ url_for('main.index') }}">首页</a>
+        <span>新话题</span>
+    </div>
+
+    <div class="panel-body">
+
+        {% if nodes %}
+        <form class="panel-body" method="post" action="">
+            <div class="col-md-4">
+                    {{ form.csrf_token }}
+                    {{ wtf.quick_form(form) }}
+            </div>
+        </form>>
+        {% else %}
+        <div class="alert alert-info">
+           没有节点可以选择，请管理员添加节点
+        </div>
+        {% endif %}
+        {{ pagedown.include_pagedown() }}
+    </div>
+</div>
+{% endblock %}

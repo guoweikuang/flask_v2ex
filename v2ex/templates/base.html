@@ -1,0 +1,99 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}V2EX-Flask{% endblock %}
+
+{% block head %}
+{{ super() }}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<!--<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">-->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+{% endblock %}
+
+
+{% block navbar %}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class ="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">首页 </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('main.hot') }}">热点话题 </a></li>
+                <li><a href="#">所有节点 </a></li>
+            </ul>
+
+            {% if current_user.is_authenticated %}
+            <div class="navbar-form navbar-right">
+                <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <button type="button" class="btn btn-info btn-primary dropdown-toggle" data-toggle="dropdown">
+                            新话题<b class="caret"></b>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('main.create_topic') }}">新话题</a></li>
+                                <li><a href="{{ url_for('auth.change_password') }}">更新密码</a></li>
+                                <li><a href="{{ url_for('auth.logout') }}">登出</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                <!--<a class="btn btn-info" id="new-btn" href="#">新话题 </a>-->
+            </div>
+            {% else %}
+            <div class="navbar-form navbar-right">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <button type="button" class="btn btn-info btn-primary dropdown-toggle" data-toggle="dropdown">
+                            登陆<b class="caret"></b>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('auth.login') }}">登陆</a></li>
+                            <li><a href="{{ url_for('auth.register') }}">注册</a></li>
+                            <li><a href="{{ url_for('auth.reset_password') }}">忘记密码</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input onkeydown="if(event.keyCode=13){search();}" type="text" id="search" class="form-control" name="search" placeholder="输入你的关键词">
+                    <a class="btn btn-default" id="search-btn">
+                        搜索
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div id="wrap">
+    <div class="container" id="main">
+        <div class="row">
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% block page_content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+<footer id="footer">
+    <div class="container clearfix">
+        <p class="muted credit pull-right">@copyright by guoweikuang2015@gmail.com</p>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='bootstrap/js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+
+{% block footer_ext %}{% endblock %}

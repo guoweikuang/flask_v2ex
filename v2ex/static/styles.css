@@ -1,0 +1,235 @@
+body {
+    background: #f3f3f3;
+}
+.profile-thumbnail {
+    position: absolute;
+}
+.profile-header {
+    min-height: 260px;
+    margin-left: 280px;
+}
+ul.posts {
+    list-style-type: none;
+    padding: 0px;
+    margin: 16px 0px 0px 0px;
+    border-top: 1px solid #e0e0e0;
+}
+ul.posts li.post {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+ul.posts li.post:hover {
+    background-color: #f0f0f0;
+}
+div.post-date {
+    float: right;
+}
+div.post-author {
+    font-weight: bold;
+}
+div.post-thumbnail {
+    position: absolute;
+}
+div.post-content {
+    margin-left: 48px;
+    min-height: 48px;
+}
+div.post-footer {
+    text-align: right;
+}
+div.pagination {
+    width: 100%;
+    text-align: right;
+    padding: 0px;
+    margin: 0px;
+}
+
+div.flask-pagedown-preview {
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #e0e0e0;
+    padding: 4px;
+}
+div.flask-pagedown-preview h1 {
+    font-size: 140%;
+}
+div.flask-pagedown-preview h2 {
+    font-size: 130%;
+}
+div.flask-pagedown-preview h3 {
+    font-size: 120%;
+}
+.post-body h1 {
+    font-size: 140%;
+}
+.post-body h2 {
+    font-size: 130%;
+}
+.post-body h3 {
+    font-size: 120%;
+}
+div.post-tabs ul.posts {
+    margin: 0px;
+    border-top: none;
+}
+div.post-tabs {
+    margin-top: 16px;
+}
+ul.comments {
+    list-style-type: none;
+    padding: 0px;
+    margin: 16px 0px 0px 0px;
+}
+ul.comments li.comment {
+    margin-left: 32px;
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+ul.comments li.comment:nth-child(1) {
+    border-top: 1px solid #e0e0e0;
+}
+ul.comments li.comment:hover {
+    background-color: #f0f0f0;
+}
+div.comment-date {
+    float: right;
+}
+div.comment-author {
+    font-weight: bold;
+}
+div.comment-thumbnail {
+    position: absolute;
+}
+div.comment-content {
+    margin-left: 48px;
+    min-height: 48px;
+}
+div.comment-form {
+    margin: 16px 0px 16px 32px;
+}
+
+
+
+
+
+body {
+  font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei",  "微软雅黑", STXihei, "华文细黑", Arial, sans-serif;
+}
+
+h1,h3,h4 {
+  font-family: Georgia, "Times New Roman",
+             "Microsoft YaHei", "微软雅黑",
+             STXihei, "华文细黑",
+             serif;
+}
+
+.navbar {
+  z-index: 1;
+}
+
+.python-jumbotron {
+  background-image: -webkit-linear-gradient(#2d618c 30%, #3776ab 95%);
+  background-image: -o-linear-gradient(#2d618c 30%, #3776ab 95%);
+  background-image: linear-gradient(#2d618c 30%, #3776ab 95%);
+}
+
+p {
+  font-family:  Helvetica, "Microsoft YaHei",  "微软雅黑", STXihei, "华文细黑", Arial, sans-serif;
+}
+
+h1 {
+  padding-bottom: 15px;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+h3 {
+  color: gray;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+h4 {
+  color: gray;
+}
+
+.center-block {
+  display: block;
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart-title {
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.navbar {
+    margin-bottom: 0;
+  }
+
+html,body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -80px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 80px;
+}
+#footer {
+  background-color: #f8f8f8;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+  #footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+
+a.anchor {
+    font-family: sans;
+    visibility: hidden;
+    text-decoration: none;
+    color: black;
+}
+
+h2:hover > a.anchor {
+    visibility: visible;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+div.page-header {
+    text-align: center;
+}
+
+/* div.col-md-4 {
+    width: 200px;
+    overflow: hidden;
+    margin: 0 auto;
+
+} */
+
+input#submit {
+    background-color: green;
+    color: #fff;
+}

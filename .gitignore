@@ -1,0 +1,14 @@
+# virtualenv
+virtualenv/
+
+__pycache__/
+# py
+*.pyc
+*.egg
+# vim
+*.swp
+*.swo
+.idea/
+
+# vscode
+.vscode/

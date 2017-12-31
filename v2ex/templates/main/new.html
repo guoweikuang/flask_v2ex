@@ -1,0 +1,56 @@
+{% extends 'base_sidebar.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block title %}
+创建话题
+{% endblock %}
+
+{% block left %}
+{% include 'auth/panel.html' %}
+{% endblock %}
+
+
+{% block right %}
+<div class="row">
+
+    <form method="post" action="{{ url_for('.new_topic') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title.label }}
+            {% if form.title.errors %}
+                {% for e in form.title.errors %}
+                    <p class="help-block">{{ e }}</p>
+                {% endfor %}
+            {% endif %}
+            {{ form.title(class_='form-control') }}
+        </div>
+
+        <div class="form-group">
+            {{ form.content.label }}
+            {% if form.content.errors %}
+                {% for e in form.content.errors %}
+                    <p class="help-block">{{ e }}</p>
+                {% endfor %}
+            {% endif %}
+            <div id="editormd" class="form-control">
+                {{ form.content(class_="form-control") }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <label>节点</label>
+                <select class="form-control" id="node" name="node">
+                    {% for opt in nodes%}
+                        <option value="{{opt.id}}"> {{ opt.title }}</option>
+                    {% endfor%}
+                </select>
+            </div>
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Edit">
+    </form>
+</div>
+{% endblock %}
+

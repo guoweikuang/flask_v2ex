@@ -1,0 +1,34 @@
+{% extends 'base_sidebar.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+个人信息
+{% endblock %}
+
+{% block left %}
+{% include 'auth/panel.html' %}
+{% endblock %}
+
+
+{% block right %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li><a href="{{ url_for('auth.setting_info') }}">个人信息</a></li>
+            <li class="active"><a href="{{ url_for('auth.change_password') }}">修改密码</a></li>
+            <li><a href="{{ url_for('auth.setting_avatar') }}">用户头像</a></li>
+        </ul>
+    </div>
+
+<form class="panel-body" method="post" action="">
+    <div class="col-md-4">
+        <p>邮箱：{{ email }}</p>
+        <p>用户名：{{ username }}</p>
+        <p>加入时间：{{ join_time }}</p>
+        <p>站点： {{ username_url }}</p>
+    </div>
+</form>>
+</div>
+{% endblock right %}
+
+

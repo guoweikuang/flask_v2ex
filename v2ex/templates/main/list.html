@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+    <div class="panel-heading title-breadcrumb">
+        {% if post_title %}
+        {{ post_title }}
+        {% else %}
+            <a href="{{ url_for('main.index') }}">最新话题</a>
+        {% endif %}
+    </div>
+
+    {% if not topics %}
+    <div class="panel-body">
+		<div class="alert alert-info">
+			没有新话题，去添加吧！！
+		</div>
+    </div>
+    {% else %}
+    <ul class="list-group">
+        {% for t in topics %}
+            <div class="list-group-item list-topic-item" id="{{ t.id }}">
+                <div class="row">
+                    <a href="{{ url_for('auth.setting_info', uid = t.user_id) }}" class="col-md-1 col-xs-2 col-sm-2">
+                        <img title="{{t.user.username}}" class="avatar-middle" src="{{ t.user.avatar_url }}"></a>
+                
+                    <div class="col-xs-9 col-md-10 col-sm-9">
+                        <h3 class="list-post-title"><a href="{{ url_for('main.topic_view', tid=t.id) }}">{{t.title}}</a></h3>
+                        <p class="list-meta">
+                            <span class="label label-default list-meta-node"><a href="{{ url_for('main.topic_view', tid=t.id) }}">{{ t.node.title }}</a></span>
+                            <span class="list-count"> {{t.click_num }} 点击数</span>
+                            <span class="list-time">{{ t.create_time | format_time }}</span>
+                            <span class="list-username"><a href="{{ url_for('main.index') }}">{{ t.user.username }}</a></span>
+                            <span class="list-reply-count-xs visible-xs">{{ t.reply_num }}</span>
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+        {% endfor %}
+
+    <div class="panel-footer">
+        {{ pagination.links }}
+	</div>
+    {% endif %}
+    </ul>
+</div>

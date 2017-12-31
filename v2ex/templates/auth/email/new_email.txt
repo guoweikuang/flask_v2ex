@@ -1,0 +1,2 @@
+{{ user.username }} 
+修改密码，请点击 {{ url_for('auth.reset_password_request', token=token, _external=True) }}
