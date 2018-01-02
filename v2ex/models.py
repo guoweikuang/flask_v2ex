@@ -27,6 +27,7 @@ class User(UserMixin, db.Model):
     username_url = db.Column(db.String(64), nullable=True)
 
     topics = db.relationship('Topic', backref="user", lazy='dynamic')
+    comments = db.relationship("Comment", backref="user", lazy="dynamic")
 
     @property
     def password(self):
@@ -77,6 +78,7 @@ class Topic(db.Model):
     node_id = db.Column(db.Integer, db.ForeignKey('node.id'))
 
     appends = db.relationship('TopicAppend', backref="topic", lazy='dynamic')
+    comments = db.relationship('Comment', backref="topic", lazy="dynamic")
 
     def node(self):
         return Node.query.filter_by(id=self.node_id).first()
@@ -156,3 +158,30 @@ db.event.listen(TopicAppend.content, 'set', TopicAppend.on_change_body)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+class Comment(db.Model):
+    """评论"""
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text())
+    content_html = db.Column(db.Text())
+    create_time = db.Column(db.DateTime(), default=datetime.utcnow)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    topic_id = db.Column(db.Integer, db.ForeignKey("topics.id"))
+
+    # markdown的处理
+    @staticmethod
+    def on_change_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                        'h1', 'h2', 'h3', 'h4', 'h5', 'p']
+        target.content_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
+    def user(self):
+        return User.query.filter_by(id=self.user_id).first()
+
+db.event.listen(Comment.content, 'set', Comment.on_change_body)

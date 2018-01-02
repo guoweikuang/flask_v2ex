@@ -43,3 +43,9 @@ class AppendPostForm(FlaskForm):
     """编辑话题表单"""
     content = TextAreaField('内容', validators=[Required()])
     submit = SubmitField('更新')
+
+
+class CommentForm(FlaskForm):
+    """评论表单"""
+    content = TextAreaField('评论', validators=[Required()])
+    submit = SubmitField('评论')

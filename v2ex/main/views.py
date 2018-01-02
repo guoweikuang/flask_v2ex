@@ -3,9 +3,9 @@ from flask import request, url_for, redirect, render_template, current_app, flas
         abort
 from flask_login import login_required, current_user 
 from flask_paginate import Pagination
-from ..models import db, User, Topic, Node, TopicAppend 
+from ..models import db, User, Topic, Node, TopicAppend, Comment
 from . import main 
-from .forms import TopicForm, PostForm, AppendForm, AppendPostForm
+from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -37,6 +37,7 @@ def hot():
                             CSS_FRAMEWORK='bootstrap',
                             bs_version=3)
     return render_template('main/index.html', pagination=pagination, topics=topics)
+
 
 @main.route('/topic/create', methods=['GET', 'POST'])
 @login_required 
@@ -80,10 +81,27 @@ def topic_view(tid):
     offset = (page - 1) * per_page 
 
     topic = Topic.query.filter_by(id=tid).first_or_404()
-    
+    comments = Comment.query.order_by(Comment.create_time.asc()).limit(per_page+offset)
+    comments = comments[offset: offset+per_page]
+    pagination = Pagination(page=page, total=Comment.query.count(),
+                            per_page=per_page,
+                            record_name="comments",
+                            CSS_FRAMEWORK="bootstrap",
+                            bs_version=3)
+
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(content=form.content.data, 
+                          user=current_user._get_current_object(),
+                          topic=topic)
+        topic.reply_num += 1
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('main.topic_view', tid=tid))
     topic.click_num += 1
     db.session.commit()
-    return render_template('main/topic.html',topic=topic)
+    return render_template('main/topic.html', topic=topic, pagination=pagination,
+                            comments=comments, form=form)
 
 
 @main.route('/topic/append/<int:tid>', methods=['GET', 'POST'])

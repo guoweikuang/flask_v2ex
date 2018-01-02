@@ -1,3 +1,4 @@
+{% import "bootstrap/wtf.html" as wtf %}
 {% extends 'base_sidebar.html' %}
 {% block left %}
 {% include 'auth/panel.html' %}
@@ -48,7 +49,71 @@
             {% endfor %}
         </ul>
     {% endif %}
+</div>
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p class="panel-title">
+            {% if topic.reply_num %}
+            {{ topic.reply_num }} 条评论
+            {% else %}
+            目前没有评论
+            {% endif %}
+        </p>
+    </div>
+    
+    {% if topic.reply_num %}
+    <ul class="list-group">
+        {% for c in comments %}
+            <div class="list-group-item list-topic-item" id="comment-{{c.id}}">
+                <div class="row">
+                    <a href="#" class="col-md-1"><img title="{{ c.user.username}}" class="avatar-middle" src=" {{ c.user.avatar_url }} "></a>
+                    <div class="col-xs-11">
+                        <div class="row">
+                            <div class="reply-author col-sm-10">
+                                <a href="#">{{ c.user.username }}</a>
+                                <span class="list-time">{{c.create_time | format_time}}</span>
+
+                            </div>
+                            <div class="col-sm-2">
+                                {% if current_user.is_authenticated %}
+                                <a href="#create_reply" data-user="{{c.user.username}}" class="label-info label pull-right reply-btn">回复</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="reply-content col-md-11" style="margin-top:0.8em">
+                                {{c.content_html | safe}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </ul>
+    <div class="panel-footer">
+        {{ pagination.links}}
+    </div>
+    {% else %}
+	<div class="panel-body">
+		<div class="alert alert-info">
+			没有评论
+		</div>
+	</div>
+    {% endif %}
+    
+</div>
+
+<div class="panel panel-default" id="create_reply">
+    <div class="panel-heading">
+		<p class="panel-title">
+			评论
+		</p>
+    </div> 
+    <div class="panel-body">
+        {{ form.csrf_token }}
+        {{ wtf.quick_form(form) }}
+    </div>
 </div>
 
 {% endblock %}
