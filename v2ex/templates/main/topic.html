@@ -7,7 +7,7 @@
 <div class="panel panel-default">
     <div class="topic-heading panel-heading">
         <div class="row">
-            <a href="{{ url_for('main.index') }}" class="col-md-1 pull-right">
+            <a href="{{ url_for('auth.info', uid=topic.user_id) }}" class="col-md-1 pull-right">
                 <img title="{{ current_user.username}}" class="avatar-large pull-right" src="{{ topic.user.avatar_url }}"></a>
                 
             <div class="col-md-10">
@@ -22,7 +22,7 @@
                         <span class="label label-default list-meta-node"><a href="{{ url_for('main.topic_view', tid=topic.id) }}">{{ topic.node.title }}</a></span>
                         <span class="list-count">{{ topic.click_num }}</span>
                         <span class="list-time">{{ topic.create_time | format_time}}</span>
-                        <span class="list-username"><a href="{{ url_for('main.topic_view', tid=topic.id) }}">{{topic.user.username}}</a></span>
+                        <span class="list-username"><a href="{{ url_for('auth.info', uid=topic.user_id) }}">{{topic.user.username}}</a></span>
                         {% if current_user.id == topic.user_id %}
                         <a class="label-success label" href="{{ url_for('main.topic_append', tid=topic.id) }}">追加内容</a>
                         <a class="label-warning label" href="{{ url_for('main.topic_edit', tid=topic.id) }}">编辑</a>
@@ -115,5 +115,6 @@
         {{ wtf.quick_form(form) }}
     </div>
 </div>
-
+<script src="{{ url_for('static', filename='js/previewer.js') }}"></script>
+<script src="{{ url_for('static', filename='js/mention.js') }}"></script>
 {% endblock %}

@@ -185,3 +185,17 @@ class Comment(db.Model):
         return User.query.filter_by(id=self.user_id).first()
 
 db.event.listen(Comment.content, 'set', Comment.on_change_body)
+
+
+class Notify(db.Model):
+    """提醒"""
+    __tablename__ = 'notify'
+    id = db.Column(db.Integer, primary_key=True)
+    create_time = db.Column(db.DateTime(), default=datetime.utcnow)
+    sender_id = db.Column(db.Integer)
+    receiver_id = db.Column(db.Integer)
+    comment_id = db.Column(db.Integer, nullable=True)
+    topic_id = db.Column(db.Integer, nullable=True)
+    append_id = db.Column(db.Integer, nullable=True)
+
+

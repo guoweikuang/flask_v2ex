@@ -7,11 +7,12 @@ from PIL import Image
 
 from flask import render_template, url_for, flash, request, redirect, current_app
 from flask_login import login_user, login_required, logout_user, current_user
+from flask_paginate import Pagination
 from werkzeug import secure_filename
 
 from .. import db
 from . import auth
-from ..models import User
+from ..models import User, Topic
 from ..email import send_email
 from .forms import LoginForm, RegisterForm, ResetPasswordForm, \
     ResetPasswordRequestForm, ChangePasswordForm
@@ -153,3 +154,24 @@ def setting_info():
         username=username,
         join_time=join_time,
         username_url=username_url)
+
+
+@auth.route('/<int:uid>')
+def info(uid):
+    user = User.query.filter_by(id=uid).first_or_404()
+
+    per_page = current_app.config['PER_PAGE']
+    page = int(request.args.get('page', 1, type=int))
+    offset = (page - 1) * per_page 
+
+    topics = user.topics.order_by(Topic.create_time.desc()).limit(per_page+offset)
+    totals = user.topics.order_by(Topic.create_time.desc()).all()
+    topics = topics[offset: offset+per_page]
+    pagination = Pagination(page=page, total=len(totals),
+                            per_page=per_page,
+                            record_name='topics',
+                            CSS_FRAMEWORK='bootstrap',
+                            bs_version=3)
+    return render_template('auth/info.html', topics=topics, pagination=pagination, user=user)
+    
+

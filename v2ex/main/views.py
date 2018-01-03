@@ -7,6 +7,8 @@ from ..models import db, User, Topic, Node, TopicAppend, Comment
 from . import main 
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
+from ..utils import add_user_links_in_content
+
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -81,7 +83,7 @@ def topic_view(tid):
     offset = (page - 1) * per_page 
 
     topic = Topic.query.filter_by(id=tid).first_or_404()
-    comments = Comment.query.order_by(Comment.create_time.asc()).limit(per_page+offset)
+    comments = Comment.query.order_by(Comment.create_time.desc()).limit(per_page+offset)
     comments = comments[offset: offset+per_page]
     pagination = Pagination(page=page, total=Comment.query.count(),
                             per_page=per_page,
@@ -91,7 +93,8 @@ def topic_view(tid):
 
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(content=form.content.data, 
+        content = add_user_links_in_content(form.content.data)
+        comment = Comment(content=content, 
                           user=current_user._get_current_object(),
                           topic=topic)
         topic.reply_num += 1
