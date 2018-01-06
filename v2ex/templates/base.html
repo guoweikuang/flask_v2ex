@@ -1,3 +1,4 @@
+<html>
 {% extends "bootstrap/base.html" %}
 {% block title %}V2EX-Flask{% endblock %}
 
@@ -11,7 +12,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 {% endblock %}
 
-
+<body>
 {% block navbar %}
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -56,10 +57,9 @@
                 </ul>
             </div>
             {% endif %}
-
             <div class="navbar-form navbar-right" role="search">
                 <div class="form-group">
-                    <input onkeydown="if(event.keyCode=13){search();}" type="text" id="search" class="form-control" name="search" placeholder="输入你的关键词">
+                    <input type="text" id="search" class="form-control" name="search" placeholder="输入你的关键词">
                     <a class="btn btn-default" id="search-btn">
                         搜索
                     </a>
@@ -68,6 +68,8 @@
         </div>
     </div>
 </nav>
+
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -95,5 +97,8 @@
 <script src="{{ url_for('static', filename='bootstrap/js/jquery.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
 
 {% block footer_ext %}{% endblock %}
+</body>
+</html>

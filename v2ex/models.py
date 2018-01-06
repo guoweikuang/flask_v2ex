@@ -82,6 +82,7 @@ class User(UserMixin, db.Model):
 
 class Topic(db.Model):
     __tablename__ = 'topics'
+    __searchable__ = ["title", "content"]
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
     content = db.Column(db.Text())

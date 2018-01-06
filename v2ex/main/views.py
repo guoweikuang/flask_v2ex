@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 from flask_paginate import Pagination
 from ..models import db, User, Topic, Node, TopicAppend, Comment
 from . import main 
+from .. import search1
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
 from ..utils import add_user_links_in_content, add_notify_in_content
@@ -170,6 +171,26 @@ def node_view(nid):
                             topics=topics,
                             node_title=node_title,
                             pagination=pagination)
+
+
+@main.route('/search/<keywords>')
+def search(keywords):
+    results = search1.whoosh_search(Topic, query=keywords, fields=["title"], limit=20)
+    results = Topic.query.msearch(keywords, fields=["title"], limit=20)
+    print(results)
+
+
+    per_page = current_app.config["PER_PAGE"]
+    page = int(request.args.get("page", 1))
+    offset = (page-1) * per_page
+    topics = results[offset:offset+per_page]
+    pagination = Pagination(page=page, 
+                    total=results.count(),
+                    per_page=per_page,
+                    record_name="comments",
+                    CSS_FRAMEWORK="bootstrap",
+                    bs_version=3)
+    return render_template("main/index.html", topics=topics, pagination=pagination)
 
 
 @main.route('/topic/test', methods=['GET', 'POST'])

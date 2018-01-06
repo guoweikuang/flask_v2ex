@@ -43,6 +43,10 @@ class Config(object):
     UPLOAD_FOLDER = os.path.join(basedir, 'v2ex/static/uploads')
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
+    # 搜索
+    WHOOSH_BASE = "whoosh_index"
+    WHOOSH_ENABLE = True
+
     PER_PAGE = 8
 
     @staticmethod

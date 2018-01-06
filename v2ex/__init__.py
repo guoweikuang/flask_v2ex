@@ -5,10 +5,12 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail 
 from flask_pagedown import PageDown
+from flask_msearch import Search
 from config import config 
 
 
 db = SQLAlchemy()
+search1 = Search(db=db)
 bootstrap = Bootstrap()
 login_manager = LoginManager()
 mail = Mail()
@@ -27,6 +29,7 @@ def create_app(config_name):
     bootstrap.init_app(app)
     mail.init_app(app)
     pagedown.init_app(app)
+    search1.init_app(app)
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
