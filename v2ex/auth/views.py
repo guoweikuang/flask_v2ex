@@ -12,7 +12,7 @@ from werkzeug import secure_filename
 
 from .. import db
 from . import auth
-from ..models import User, Topic
+from ..models import User, Topic, Notify
 from ..email import send_email
 from .forms import LoginForm, RegisterForm, ResetPasswordForm, \
     ResetPasswordRequestForm, ChangePasswordForm
@@ -175,3 +175,19 @@ def info(uid):
     return render_template('auth/info.html', topics=topics, pagination=pagination, user=user)
     
 
+@auth.route('/notify')
+@login_required
+def notify():
+    if request.method == 'GET':
+        notifies = Notify.query.filter_by(receiver_id=current_user.id)
+        read = notifies.filter_by(read_flag=True)
+        unread = notifies.filter_by(read_flag=False)
+        for n in notifies:
+            if n.read_flag:
+                continue
+            n.read_flag = True 
+            db.session.add(n)
+        db.session.commit()
+        return render_template('auth/notify.html', read=read, unread=unread)
+    else:
+        abort(403)

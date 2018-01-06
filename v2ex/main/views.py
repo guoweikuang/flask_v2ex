@@ -7,7 +7,7 @@ from ..models import db, User, Topic, Node, TopicAppend, Comment
 from . import main 
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
-from ..utils import add_user_links_in_content
+from ..utils import add_user_links_in_content, add_notify_in_content
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -100,6 +100,7 @@ def topic_view(tid):
         topic.reply_num += 1
         db.session.add(comment)
         db.session.commit()
+        add_notify_in_content(form.content.data, current_user.id, tid, comment.id)
         return redirect(url_for('main.topic_view', tid=tid))
     topic.click_num += 1
     db.session.commit()
@@ -141,6 +142,34 @@ def topic_edit(tid):
     form.content.data = topic.content
     return render_template('main/topic_edit.html', topic=topic, form=form)
 
+
+@main.route('/nodes')
+def nodes():
+    nodes = Node.query.all()
+    return render_template('main/nodes.html', nodes=nodes)
+
+
+@main.route('/node/<int:nid>')
+def node_view(nid):
+    node = Node.query.filter_by(id=nid).first_or_404()
+    node_title = node.title
+    per_page = current_app.config['PER_PAGE']
+    page = int(request.args.get('page', 1))
+    offset = (page - 1) * per_page
+
+    topics = Topic.query.filter_by(node_id=nid).order_by(
+        Topic.create_time.desc()).limit(per_page+offset)
+    topics = topics[offset:offset+per_page]
+    pagination = Pagination(page=page, 
+                        total=Topic.query.filter_by(node_id=nid).count(),
+                        per_page=per_page,
+                        record_name="comments",
+                        CSS_FRAMEWORK="bootstrap",
+                        bs_version=3)
+    return render_template('main/node_view.html', 
+                            topics=topics,
+                            node_title=node_title,
+                            pagination=pagination)
 
 
 @main.route('/topic/test', methods=['GET', 'POST'])

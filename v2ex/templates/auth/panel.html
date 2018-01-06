@@ -10,7 +10,7 @@
         </div>
         <div class="row" style="margin-top: 1em">
             <div class="col-xs-4">
-                <a href="" class="btn btn-block"> <span class="glyphicon glyphicon-home"></span> 主页</a>
+                <a href="{{ url_for("auth.info", uid=current_user.id)}}" class="btn btn-block"> <span class="glyphicon glyphicon-home"></span> 主页</a>
             </div>
 
             <div class="col-xs-4">
@@ -29,4 +29,16 @@
         </div> 
         {% endif %}
     </div>
+
+    {% if current_user.is_authenticated %}
+        {% if current_user.extract_unread_notify() %}
+        <div class="panel-footer">
+            <span class="notification"><a href="{{ url_for('auth.notify') }}">{{current_user.extract_unread_notify() }} 条新消息</a></span>
+        </div>
+        {% else  %}
+        <div class="panel-footer">
+            <span class="notification"><a href="{{ url_for('auth.notify') }}">站内消息</a></span>
+        </div>
+        {% endif %}
+    {% endif %}
 </div>

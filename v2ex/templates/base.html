@@ -21,7 +21,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('main.hot') }}">热点话题 </a></li>
-                <li><a href="#">所有节点 </a></li>
+                <li><a href="{{ url_for('main.nodes') }}">所有节点 </a></li>
             </ul>
 
             {% if current_user.is_authenticated %}

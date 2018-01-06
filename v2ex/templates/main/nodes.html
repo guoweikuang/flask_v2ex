@@ -1,0 +1,30 @@
+{% extends 'base_sidebar.html' %}
+{% block left %}
+{% include 'auth/panel.html' %}
+{% endblock %}
+
+{% block right %}
+  {% if nodes %}
+  {% for i in range(0, nodes|length, 4) %}
+    <div class="row">
+      {% for n in nodes[i: i+4] %}
+      <div class="col-md-3">
+      <a class="thumbnail" href="{{ url_for ('main.node_view', nid = n.id) }}">
+          <span class="badge pull-right"> {{ n.topics.count() }} </span>
+      <div class="caption">
+        <p class="text-center"><strong>{{ n.title }}</strong></p>
+        <p>{{ n.description }}</p>
+      </div>
+      </a>
+      </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  {% else %}
+		<div class="alert alert-danger">
+			对不起，我们不能找到任何的节点
+		</div>
+  {% endif %}
+
+{% endblock %}

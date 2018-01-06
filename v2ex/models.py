@@ -29,6 +29,8 @@ class User(UserMixin, db.Model):
     topics = db.relationship('Topic', backref="user", lazy='dynamic')
     comments = db.relationship("Comment", backref="user", lazy="dynamic")
 
+   # unread_notify = db.relationship("Notify", backref="user", lazy="dynamic")
+
     @property
     def password(self):
         raise AttributeError('password not allow to reading!')
@@ -59,6 +61,20 @@ class User(UserMixin, db.Model):
         user.password = new_password
         db.session.add(user)
         return True
+
+    def extract_read_notify(self):
+        notifies = Notify.query.filter_by(id=self.id).filter_by(read_flag=True)
+        if notifies:
+            return notifies.count()
+        else:
+            return 0
+
+    def extract_unread_notify(self):
+        notifies = Notify.query.filter_by(id=self.id).filter_by(read_flag=False)
+        if notifies:
+            return notifies.count()
+        else:
+            return 0
 
     def __repr__(self):
         return '<User %s>' % self.username
@@ -197,5 +213,15 @@ class Notify(db.Model):
     comment_id = db.Column(db.Integer, nullable=True)
     topic_id = db.Column(db.Integer, nullable=True)
     append_id = db.Column(db.Integer, nullable=True)
+    read_flag = db.Column(db.Boolean, default=False)
+
+    @property
+    def topic(self):
+        return Topic.query.filter_by(id=self.topic_id).first()
+
+    @property
+    def sender(self):
+        return User.query.filter_by(id=self.sender_id).first()
+
 
 
