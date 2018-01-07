@@ -84,9 +84,10 @@ def topic_view(tid):
     offset = (page - 1) * per_page 
 
     topic = Topic.query.filter_by(id=tid).first_or_404()
-    comments = Comment.query.order_by(Comment.create_time.desc()).limit(per_page+offset)
+    comments = topic.comments.order_by(Comment.create_time.desc()).limit(per_page+offset)
+    # comments = Comment.query.order_by(Comment.create_time.desc()).limit(per_page+offset)
     comments = comments[offset: offset+per_page]
-    pagination = Pagination(page=page, total=Comment.query.count(),
+    pagination = Pagination(page=page, total=topic.comments.count(),
                             per_page=per_page,
                             record_name="comments",
                             CSS_FRAMEWORK="bootstrap",
