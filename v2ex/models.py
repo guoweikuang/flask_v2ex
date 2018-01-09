@@ -76,6 +76,11 @@ class User(UserMixin, db.Model):
         else:
             return 0
 
+    def hot_topic(self):
+        """获取top10话题"""
+        # TODO: redis 存top，根据策略来更新话题
+        return Topic.query.order_by(Topic.reply_num.desc()).limit(10)
+
     def __repr__(self):
         return '<User %s>' % self.username
 

@@ -17,6 +17,11 @@ p{
 	padding-top: 5px;
 }
 
+.list-post-title-small {
+	font-size: 20%;
+	padding-top: 2px;
+}
+
 .avatar-middle {
 	width: 48px;
 	height: 48px;

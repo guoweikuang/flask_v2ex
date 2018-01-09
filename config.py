@@ -47,7 +47,7 @@ class Config(object):
     WHOOSH_BASE = "whoosh_index"
     WHOOSH_ENABLE = True
 
-    PER_PAGE = 8
+    PER_PAGE = 20
 
     @staticmethod
     def init_app(app):
