@@ -85,10 +85,10 @@ class UserView(ModelView):
     }
     column_list = ("id", "username", "email", "join_time", "avatar_url", "last_seen", "username_url")
 
-    # def is_accessible(self):
-    #     if current_user.is_authenticated and current_user.is_administator:
-    #         return True 
-    #     return False
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.is_administator:
+            return True 
+        return False
 
     def __init__(self, model, session, **kwargs):
         super(UserView, self).__init__(model, session, **kwargs)
@@ -109,10 +109,10 @@ class TopicView(ModelView):
     def __init__(self, model, session, **kwargs):
         super(TopicView, self).__init__(model, session, **kwargs)
 
-    # def is_accessible(self):
-    #     if current_user.is_authenticated and current_user.is_administator:
-    #         return True 
-    #     return False
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.is_administator:
+            return True 
+        return False
 
 
 class TopicAppendView(ModelView):
@@ -127,10 +127,10 @@ class TopicAppendView(ModelView):
     def __init__(self, model, session, **kwargs):
         super(TopicAppendView, self).__init__(model, session, **kwargs)
 
-    # def is_accessible(self):
-    #     if current_user.is_authenticated and current_user.is_administator:
-    #         return True 
-    #     return False
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.is_administator:
+            return True 
+        return False
 
 
 class NodeView(ModelView):
@@ -143,10 +143,10 @@ class NodeView(ModelView):
     def __init__(self, model, session, **kwargs):
         super(NodeView, self).__init__(model, session, **kwargs)
 
-    # def is_accessible(self):
-    #     if current_user.is_authenticated and current_user.is_administator:
-    #         return True 
-    #     return False
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.is_administator:
+            return True 
+        return False
 
 
 class CommentView(ModelView):
@@ -161,10 +161,10 @@ class CommentView(ModelView):
     def __init__(self, model, session, **kwargs):
         super(CommentView, self).__init__(model, session, **kwargs)
 
-    # def is_accessible(self):
-    #     if current_user.is_authenticated and current_user.is_administator:
-    #         return True 
-    #     return False
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.is_administator:
+            return True 
+        return False
 
 
 class NotifyView(ModelView):
@@ -172,10 +172,10 @@ class NotifyView(ModelView):
     def __init__(self, model, session, **kwargs):
         super(NotifyView, self).__init__(model, session, **kwargs)
 
-    # def is_accessible(self):
-    #     if current_user.is_authenticated and current_user.is_administator:
-    #         return True 
-    #     return False
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.is_administator:
+            return True 
+        return False
 
 
 def get_content_from_redis(key_name, key_type):

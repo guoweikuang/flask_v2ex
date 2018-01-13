@@ -39,17 +39,17 @@ class User(UserMixin, db.Model):
     def password(self, password):
         self.password_hash = generate_password_hash(password)
 
-    # def is_authenticated(self):
-    #     if isinstance(self, AnonymousUserMixin):
-    #         return False
-    #     else:
-    #         return True 
+    def is_authenticated(self):
+        if isinstance(self, AnonymousUserMixin):
+            return False
+        else:
+            return True 
     
-    # def is_administator(self):
-    #     if not self.is_superuser:
-    #         return False 
-    #     else:
-    #         return True 
+    def is_administator(self):
+        if not self.is_superuser:
+            return False 
+        else:
+            return True 
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
