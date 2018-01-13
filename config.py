@@ -37,7 +37,7 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'gwk2014081029'
     
     # 国际化与本地化
-    BABEL_DEFAULT_LOCALE = 'zh'
+    BABEL_DEFAULT_LOCALE = 'zh_CN'
     BABEL_DEFAULT_TIMEZONE = 'CST'
 
     UPLOAD_FOLDER = os.path.join(basedir, 'v2ex/static/uploads')

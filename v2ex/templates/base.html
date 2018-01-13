@@ -2,6 +2,12 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}V2EX-Flask{% endblock %}
 
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{moment.lang('zh-CN')}}
+{% endblock %}
+
 {% block head %}
 {{ super() }}
 <meta name="viewport" content="width=device-width, initial-scale=1">

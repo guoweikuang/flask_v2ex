@@ -39,6 +39,18 @@ class User(UserMixin, db.Model):
     def password(self, password):
         self.password_hash = generate_password_hash(password)
 
+    # def is_authenticated(self):
+    #     if isinstance(self, AnonymousUserMixin):
+    #         return False
+    #     else:
+    #         return True 
+    
+    # def is_administator(self):
+    #     if not self.is_superuser:
+    #         return False 
+    #     else:
+    #         return True 
+
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
@@ -76,10 +88,10 @@ class User(UserMixin, db.Model):
         else:
             return 0
 
-    def hot_topic(self):
-        """获取top10话题"""
-        # TODO: redis 存top，根据策略来更新话题
-        return Topic.query.order_by(Topic.reply_num.desc()).limit(10)
+    # def hot_topic(self):
+    #     """获取top10话题"""
+    #     # TODO: redis 存top，根据策略来更新话题
+    #     return Topic.query.order_by(Topic.reply_num.desc()).limit(10)
 
     def __repr__(self):
         return '<User %s>' % self.username
@@ -135,9 +147,9 @@ db.event.listen(Topic.content, 'set', Topic.on_change_body)
 class Node(db.Model):
     """节点"""
 
-    def __init__(self, title, description):
-        self.title = title
-        self.description = description
+    # def __init__(self, title, description):
+    #     self.title = title
+    #     self.description = description
 
     __tablename__ = 'node'
     id = db.Column(db.Integer, primary_key=True)

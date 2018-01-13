@@ -43,31 +43,17 @@
     {% endif %}
 </div>
 
-<!--
-<div class="panel panel-default">
-    <div class="panel-footer">
-            <span class="notification"><a href="{{ url_for('auth.notify') }}">今日热议主题</a></span>
-        </div>
-    <div class="panel-body">
-        <ul class="list-group">
-            {% for topic in current_user.hot_topic() %}
-            <li class="list-group-item">
-                    <h3 class="list-post-title-small">
-                        <a href="{{ url_for('main.topic_view', tid=topic.id) }}">{{ topic.title }}</a></h3>
-           
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
--->
 <div class="panel panel-default">
     <div class="panel-footer">
             <span class="notification"><a href="{{ url_for('auth.notify') }}">今日热议主题</a></span>
         </div>
     <div class="list-group">
-    {% for topic in current_user.hot_topic() %}
-        <a href="{{ url_for('main.topic_view', tid=topic.id) }}" class="list-group-item">{{ topic.title }}</a>
+    {% for tid, title in top %}
+    <p class="list-meta">
+
+        <a href="{{ url_for('main.topic_view', tid=tid) }}" class="list-group-item">{{ title }}</a>
+        </p>
     {% endfor %}
+        
     </div>
 </div>

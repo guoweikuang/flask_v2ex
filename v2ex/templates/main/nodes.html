@@ -1,9 +1,9 @@
 {% extends 'base_sidebar.html' %}
-{% block left %}
+{% block right %}
 {% include 'auth/panel.html' %}
 {% endblock %}
 
-{% block right %}
+{% block left %}
   {% if nodes %}
   {% for i in range(0, nodes|length, 4) %}
     <div class="row">

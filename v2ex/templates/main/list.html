@@ -1,11 +1,22 @@
 <div class="panel panel-default">
     <div class="panel-heading title-breadcrumb">
-        {% if post_title %}
-        {{ post_title }}
-        {% else %}
-            <a href="{{ url_for('main.index') }}">最新话题</a>
+        <ul class="nav nav-pills">
+        {% for nid, title in nodes %}
+            {% if title == "技术" %}
+            <li role="presentation" class="active"><a href="{{ url_for('main.node_view', nid=nid) }}">{{ title }}</a>
+            </li>
+            {% else %}
+            <li role="presentation"><a href="{{ url_for('main.node_view', nid=nid) }}">{{ title }}</a>
+            </li>
+            {% endif %}
+
+        {% endfor %}
+        </ul>     
+        {% if node_title %}
+            当前节点为 {{ node_title }}，该节点下总共有 {{ node.topics.count() }} 个话题.
         {% endif %}
     </div>
+    
 
     {% if not topics %}
     <div class="panel-body">
@@ -26,7 +37,7 @@
                         <p class="list-meta">
                             <span class="label label-default list-meta-node"><a href="{{ url_for('main.topic_view', tid=t.id) }}">{{ t.node.title }}</a></span>
                             <span class="list-count"> {{t.click_num }} 点击数</span>
-                            <span class="list-time">{{ t.create_time | format_time }}</span>
+                            <span class="list-time">{{ moment(t.create_time, local=True).fromNow(refresh=True) }}</span>
                             <span class="list-username"><a href="{{ url_for('auth.info', uid=t.user_id) }}">{{ t.user.username }}</a></span>
                             <span class="list-reply-count-xs visible-xs">{{ t.reply_num }}</span>
                         </p>

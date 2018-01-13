@@ -6,12 +6,12 @@
 创建话题
 {% endblock %}
 
-{% block left %}
+{% block right %}
 {% include 'auth/panel.html' %}
 {% endblock %}
 
 
-{% block right %}
+{% block left %}
 <div class="row">
 
     <form method="post" action="{{ url_for('.new_topic') }}">

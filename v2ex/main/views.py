@@ -8,7 +8,10 @@ from . import main
 from .. import search1
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
-from ..utils import add_user_links_in_content, add_notify_in_content
+from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis
+
+import redis
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -23,7 +26,12 @@ def index():
                         record_name='topics',
                         CSS_FRAMEWORK='bootstrap',
                         bs_version=3)
-    return render_template('main/index.html', pagination=pagination, topics=topics)
+    
+    top = get_content_from_redis(key_name="topic", key_type="Topic")
+    nodes = get_content_from_redis(key_name="nodes", key_type="Node")
+    return render_template('main/index.html', 
+                            pagination=pagination, 
+                            topics=topics, nodes=nodes, top=top)
 
 
 @main.route('/topic/hot', methods=['GET', 'POST'])
@@ -39,7 +47,30 @@ def hot():
                             record_name='topics',
                             CSS_FRAMEWORK='bootstrap',
                             bs_version=3)
-    return render_template('main/index.html', pagination=pagination, topics=topics)
+    top = r.llen("v2ex:topic:top")
+    if not top:
+        top_topic = Topic.query.order_by(Topic.reply_num).limit(10)
+        for topic in top_topic:
+            r.lpush("v2ex:topic:top:key", topic.id)
+            r.lpush("v2ex:topic:top:value", topic.title)
+        r.expire("v2ex:topic:top:key", 60 * 30)
+        r.expire("v2ex:topic:top:value", 60 * 30)
+    # TOP 10 节点信息存入redis， 防止每次请求都读一次数据库
+    nodes = r.llen("v2ex:nodes:top:key")
+    if not nodes:
+        nodes = Node.query.limit(10)
+        for node in nodes:
+            r.lpush("v2ex:nodes:top:key", node.id)
+            r.lpush("v2ex:nodes:top:value", node.title)
+    keys = r.lrange("v2ex:nodes:top:key", 0, 10)
+    values = r.lrange("v2ex:nodes:top:value", 0, 10)
+    nodes = [(nid, title) for nid, title in zip(keys, values)]
+    top_id = r.lrange("v2ex:topic:top:key", 0, 10)
+    top_title = r.lrange("v2ex:topic:top:value", 0, 10)
+    top = [(tid, title) for tid, title in zip(top_id, top_title)]
+    return render_template('main/index.html', 
+                            pagination=pagination, 
+                            topics=topics, nodes=nodes, top=top)
 
 
 @main.route('/topic/create', methods=['GET', 'POST'])
@@ -171,7 +202,7 @@ def node_view(nid):
     return render_template('main/node_view.html', 
                             topics=topics,
                             node_title=node_title,
-                            pagination=pagination)
+                            pagination=pagination, node=node)
 
 
 @main.route('/search/<keywords>')
