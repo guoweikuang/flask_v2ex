@@ -74,6 +74,8 @@ class AdminModelView(BaseView):
 
 
 class UserView(ModelView):
+    column_searchable_list = ["username", "email", "id"]
+    column_filters = ["username", "email"]
     column_labels = {
         "id": "序号", 
         "username": "用户名",
@@ -95,6 +97,8 @@ class UserView(ModelView):
 
 
 class TopicView(ModelView):
+    column_searchable_list = ["title", "user_id", "id", "node_id"]
+    column_filters = ["title", "user_id", "node_id"]
     column_labels = {
         "id": "序号",
         "title": "标题",
@@ -116,6 +120,8 @@ class TopicView(ModelView):
 
 
 class TopicAppendView(ModelView):
+    column_searchable_list = ["topic_id", "id"]
+    column_filters = ["topic_id"]
     column_labels = {
         "id": "序号",
         "content": "追加内容",
@@ -134,6 +140,8 @@ class TopicAppendView(ModelView):
 
 
 class NodeView(ModelView):
+    column_searchable_list = ["title", "id"]
+    column_filters = ["title"]
     column_labels = {
         "id": "序号",
         "title": "节点名称",
@@ -150,6 +158,8 @@ class NodeView(ModelView):
 
 
 class CommentView(ModelView):
+    column_searchable_list = ["user_id", "id", "topic_id"]
+    column_filters = ["topic_id", "user_id"]
     column_labels = {
         "id": "序号",
         "content": "评论内容", 
@@ -168,6 +178,8 @@ class CommentView(ModelView):
 
 
 class NotifyView(ModelView):
+    column_searchable_list = ["topic_id", "id", "read_flag"]
+    column_filters = ["topic_id", "read_flag"]
     column_list = ("id", "create_time", "read_flag", "topic_id")
     def __init__(self, model, session, **kwargs):
         super(NotifyView, self).__init__(model, session, **kwargs)
