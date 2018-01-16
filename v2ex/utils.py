@@ -42,9 +42,7 @@ def add_notify_in_content(content, sender_id, topic_id, comment_id=None, append_
     """ 生成评论消息提醒 
     """
     receivers = []
-    print(content)
     for name in re.findall(r"@(.*?)(?:\s|$)", content):
-        print(name)
         receiver = User.query.filter_by(username=name).first()
         if receiver:
             receivers.append(receiver)

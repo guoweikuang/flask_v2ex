@@ -75,14 +75,14 @@ class User(UserMixin, db.Model):
         return True
 
     def extract_read_notify(self):
-        notifies = Notify.query.filter_by(id=self.id).filter_by(read_flag=True)
+        notifies = Notify.query.filter_by(receiver_id=self.id).filter_by(read_flag=1)
         if notifies:
             return notifies.count()
         else:
             return 0
 
     def extract_unread_notify(self):
-        notifies = Notify.query.filter_by(id=self.id).filter_by(read_flag=False)
+        notifies = Notify.query.filter_by(receiver_id=self.id).filter_by(read_flag=0)
         if notifies:
             return notifies.count()
         else:

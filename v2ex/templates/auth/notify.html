@@ -5,12 +5,12 @@
 
 {% block left %}
 <div class="panel panel-default">
-    {% if unread %}
     <div class="panel-heading">
-        <p class="panel-title">
-            未读消息
-        </p>
-    </div>
+            <p class="panel-title">
+                未读消息
+            </p>
+        </div>
+    {% if unread %}
     <ul class="list-group">
         {% for n in unread %}
         <div class="list-group-item list-topic-item">
