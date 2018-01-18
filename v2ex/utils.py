@@ -262,3 +262,11 @@ def get_v2ex_browse_num():
         r.incr(V2EX_BROWSE_NUMS)
         return r.get(V2EX_BROWSE_NUMS)
         
+
+def get_top_hot_node():
+    nodes = Node.query.all()
+    top = {}
+    for node in nodes:
+        top[node.id] = (node.title, node.topics.count())
+    top = sorted(top.items(), key=lambda a: a[1][1], reverse=True)
+    return top[:10]

@@ -10,7 +10,7 @@ from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
 from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis, \
                     get_v2ex_people_num, get_v2ex_topic_num, get_v2ex_comment_num, \
-                    get_v2ex_browse_num
+                    get_v2ex_browse_num, get_top_hot_node
 
 
 import redis
@@ -37,12 +37,15 @@ def index():
     topic_num = get_v2ex_topic_num()
     comment_num = get_v2ex_comment_num()
     browse_num = get_v2ex_browse_num()
+    top_nodes = get_top_hot_node()
+    print(top_nodes)
 
     return render_template('main/index.html', 
                             pagination=pagination, 
                             topics=topics, nodes=nodes, top=top,
                             people_num=people_num, topic_num=topic_num,
-                            browse_num=browse_num, comment_num=comment_num)
+                            browse_num=browse_num, comment_num=comment_num,
+                            top_nodes=top_nodes)
 
 
 @main.route('/topic/hot', methods=['GET', 'POST'])
@@ -64,12 +67,14 @@ def hot():
     topic_num = get_v2ex_topic_num()
     comment_num = get_v2ex_comment_num()
     browse_num = get_v2ex_browse_num()
+    top_nodes = get_top_hot_node()
 
     return render_template('main/index.html', 
                             pagination=pagination, 
                             topics=topics, nodes=nodes, top=top, 
                             topic_num=topic_num, people_num=people_num, 
-                            browse_num=browse_num, comment_num=comment_num)
+                            browse_num=browse_num, comment_num=comment_num,
+                            top_nodes=top_nodes)
 
 
 @main.route('/topic/create', methods=['GET', 'POST'])
