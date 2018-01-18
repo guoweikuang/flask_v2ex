@@ -8,7 +8,10 @@ from . import main
 from .. import search1
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
-from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis
+from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis, \
+                    get_v2ex_people_num, get_v2ex_topic_num, get_v2ex_comment_num, \
+                    get_v2ex_browse_num
+
 
 import redis
 r = redis.Redis(host='localhost', port=6379, decode_responses=True)
@@ -29,9 +32,17 @@ def index():
     
     top = get_content_from_redis(key_name="topic", key_type="Topic")
     nodes = get_content_from_redis(key_name="nodes", key_type="Node")
+
+    people_num = get_v2ex_people_num()
+    topic_num = get_v2ex_topic_num()
+    comment_num = get_v2ex_comment_num()
+    browse_num = get_v2ex_browse_num()
+
     return render_template('main/index.html', 
                             pagination=pagination, 
-                            topics=topics, nodes=nodes, top=top)
+                            topics=topics, nodes=nodes, top=top,
+                            people_num=people_num, topic_num=topic_num,
+                            browse_num=browse_num, comment_num=comment_num)
 
 
 @main.route('/topic/hot', methods=['GET', 'POST'])
@@ -49,10 +60,16 @@ def hot():
                             bs_version=3)
     top = get_content_from_redis(key_name="topic", key_type="Topic")
     nodes = get_content_from_redis(key_name="nodes", key_type="Node")
+    people_num = get_v2ex_people_num()
+    topic_num = get_v2ex_topic_num()
+    comment_num = get_v2ex_comment_num()
+    browse_num = get_v2ex_browse_num()
 
     return render_template('main/index.html', 
                             pagination=pagination, 
-                            topics=topics, nodes=nodes, top=top)
+                            topics=topics, nodes=nodes, top=top, 
+                            topic_num=topic_num, people_num=people_num, 
+                            browse_num=browse_num, comment_num=comment_num)
 
 
 @main.route('/topic/create', methods=['GET', 'POST'])

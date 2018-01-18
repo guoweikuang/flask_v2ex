@@ -315,3 +315,29 @@ blockquote
 .center-guo {
 	text-align: center;
 }
+
+
+.cell {
+	padding: 10px;
+	font-size: 16px;
+	line-height: 120%;
+	text-align: left;
+	border-bottom: 1px solid #e2e2e2;
+	font-weight: bold;
+}
+
+.add_bold {
+	font-weight: bold;
+	color: black;
+}
+
+.gray {
+	color: gray;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: grey;
+}

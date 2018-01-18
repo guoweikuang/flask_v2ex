@@ -5,7 +5,11 @@ from datetime import datetime
 
 from .const import V2EX_COMMON_TOP_KEY
 from .const import V2EX_COMMON_TOP_VALUE
-from .models import User, Notify, Topic, Node
+from .const import V2EX_PEOPLE_NUMS
+from .const import V2EX_TOPIC_NUMS
+from .const import V2EX_BROWSE_NUMS
+from .const import V2EX_COMMENT_NUMS
+from .models import User, Notify, Topic, Node, Comment
 from . import db 
 from flask import url_for, request
 from flask_admin.contrib.sqla import ModelView
@@ -213,4 +217,48 @@ def get_content_from_redis(key_name, key_type):
     contents = [(tid, title) for tid, title in zip(keys, values)]
     return contents
             
+
+def get_v2ex_people_num():
+    key = r.exists(V2EX_PEOPLE_NUMS)
+    if not key:
+        peoples = User.query.count()
+        r.set(V2EX_PEOPLE_NUMS, peoples)
+        r.expire(V2EX_PEOPLE_NUMS, 60 * 3)
+    else:
+        peoples = r.get(V2EX_PEOPLE_NUMS)
+    return peoples 
+
+
+def get_v2ex_topic_num():
+    key = r.exists(V2EX_TOPIC_NUMS)
+    if not key:
+        topic_num = Topic.query.count()
+        r.set(V2EX_TOPIC_NUMS, topic_num)
+        r.expire(V2EX_TOPIC_NUMS, 60 * 2)
+    else:
+        topic_num = r.get(V2EX_TOPIC_NUMS)
+    return topic_num
+
+    
+def get_v2ex_comment_num():
+    key = r.exists(V2EX_COMMENT_NUMS)
+    if not key:
+        comment_num = Comment.query.count()
+        print(comment_num)
+        r.set(V2EX_COMMENT_NUMS, comment_num)
+        r.expire(V2EX_COMMENT_NUMS, 60)
+        return comment_num
+    else:
+        comment_num = r.get(V2EX_COMMENT_NUMS)
+    return comment_num
+
+
+def get_v2ex_browse_num():
+    key = r.exists(V2EX_BROWSE_NUMS)
+    if not key:
+        r.set(V2EX_BROWSE_NUMS, 1)
+        return r.get(V2EX_BROWSE_NUMS)
+    else:
+        r.incr(V2EX_BROWSE_NUMS)
+        return r.get(V2EX_BROWSE_NUMS)
         
