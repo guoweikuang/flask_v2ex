@@ -59,6 +59,7 @@
 </div>
 
 <div class="panel panel-default">
+        {% if top_nodes %}
         <div class="panel-footer">
                 <span class="notification"><a href="#">最热节点</a></span>
             </div>
@@ -67,9 +68,10 @@
                 <a href="url_for('main.node_view', nid=nid)" class="item_node">{{ node[0] }}</a>
                 {% endfor %}
             </div>
-      
+        {% endif %}
     </div>
 
+{% if topic_num %}
 <div class="panel panel-default">
     <div class="panel-footer">
             <span class="notification"><a href="#">社区运行情况</a></span>
@@ -83,4 +85,4 @@
         </div>
   
 </div>
-
+{% endif %}

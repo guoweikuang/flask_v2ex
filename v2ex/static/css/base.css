@@ -351,3 +351,18 @@ a.item_node {
 	display: inline-block;
 	border: 1px solid #e5e5e5;
 }
+
+.sep10 {
+	height: 10px;
+}
+
+.inner {
+	padding: 10px;
+	font-size: 14px;
+	line-height: 150%;
+	text-align: left;
+}
+
+.snow {
+	color: #e2e2e2;
+}

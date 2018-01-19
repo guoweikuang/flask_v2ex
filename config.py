@@ -49,6 +49,8 @@ class Config(object):
 
     PER_PAGE = 20
 
+    ONLINE_LAST_MINUTES = 5
+
     @staticmethod
     def init_app(app):
         pass 

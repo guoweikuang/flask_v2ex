@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import redis
+import time 
 from datetime import datetime
 
 from .const import V2EX_COMMON_TOP_KEY
@@ -9,6 +10,7 @@ from .const import V2EX_PEOPLE_NUMS
 from .const import V2EX_TOPIC_NUMS
 from .const import V2EX_BROWSE_NUMS
 from .const import V2EX_COMMENT_NUMS
+from .const import ONLINE_LAST_MINUTES
 from .models import User, Notify, Topic, Node, Comment
 from . import db 
 from flask import url_for, request
@@ -270,3 +272,31 @@ def get_top_hot_node():
         top[node.id] = (node.title, node.topics.count())
     top = sorted(top.items(), key=lambda a: a[1][1], reverse=True)
     return top[:10]
+
+
+def mark_online(user_id):
+    now = int(time.time())
+    expires = now + (ONLINE_LAST_MINUTES * 60) + 10
+    all_user_key = 'v2ex:online:users:%d' % (now // 60)
+    user_key = 'v2ex:online:activitys:%s' % user_id
+
+    p = r.pipeline()
+    p.sadd(all_user_key, user_id)
+    p.set(user_key, now)
+    p.expireat(all_user_key, expires)
+    p.expireat(user_key, expires)
+    p.execute()
+
+
+def get_user_last_activity(user_id):
+    last_active = r.get('v2ex:online:activitys:%s' % user_id)
+    if last_active is None:
+        return None
+    return datetime.utcfromtimestamp(int(last_active))
+
+
+def get_online_users():
+    current = int(time.time()) // 60
+    minutes = range(ONLINE_LAST_MINUTES)
+    return r.sunion(["v2ex:online:users:%d" % (current - x) for x in minutes])
+

@@ -21,6 +21,5 @@ V2EX_COMMENT_NUMS = "v2ex:comment:nums"
 
 V2EX_BROWSE_NUMS = "v2ex:browse:nums"
 
-
-
+ONLINE_LAST_MINUTES = 5
         

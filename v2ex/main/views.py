@@ -10,12 +10,16 @@ from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
 from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis, \
                     get_v2ex_people_num, get_v2ex_topic_num, get_v2ex_comment_num, \
-                    get_v2ex_browse_num, get_top_hot_node
+                    get_v2ex_browse_num, get_top_hot_node, mark_online, get_online_users
 
 
 import redis
 r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
+
+@main.before_request
+def mark_current_user_online():
+    mark_online(request.remote_addr)
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -39,13 +43,14 @@ def index():
     browse_num = get_v2ex_browse_num()
     top_nodes = get_top_hot_node()
     print(top_nodes)
+    online_users = get_online_users()
 
     return render_template('main/index.html', 
                             pagination=pagination, 
                             topics=topics, nodes=nodes, top=top,
                             people_num=people_num, topic_num=topic_num,
                             browse_num=browse_num, comment_num=comment_num,
-                            top_nodes=top_nodes)
+                            top_nodes=top_nodes, online=online_users)
 
 
 @main.route('/topic/hot', methods=['GET', 'POST'])
@@ -68,13 +73,14 @@ def hot():
     comment_num = get_v2ex_comment_num()
     browse_num = get_v2ex_browse_num()
     top_nodes = get_top_hot_node()
+    online_users = get_online_users()
 
     return render_template('main/index.html', 
                             pagination=pagination, 
                             topics=topics, nodes=nodes, top=top, 
                             topic_num=topic_num, people_num=people_num, 
                             browse_num=browse_num, comment_num=comment_num,
-                            top_nodes=top_nodes)
+                            top_nodes=top_nodes, online=online_users)
 
 
 @main.route('/topic/create', methods=['GET', 'POST'])
