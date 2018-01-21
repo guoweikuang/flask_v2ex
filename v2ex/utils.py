@@ -19,7 +19,6 @@ from flask_admin import BaseView
 from flask_login import current_user
 
 
-
 r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 

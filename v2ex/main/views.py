@@ -13,8 +13,8 @@ from ..utils import add_user_links_in_content, add_notify_in_content, get_conten
                     get_v2ex_browse_num, get_top_hot_node, mark_online, get_online_users
 
 
-import redis
-r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+# import redis
+# r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 
 @main.before_request
