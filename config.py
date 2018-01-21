@@ -74,7 +74,7 @@ class ProductionConfig(Config):
 
 class TestingConfig(Config):
     """测试模式配置"""
-
+    TESTING = True
     DEBUG = True 
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATEBASE_URL') or \
             'sqlite:////' + os.path.join(basedir, 'date-test.sqlite')

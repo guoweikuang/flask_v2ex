@@ -74,9 +74,6 @@ h3.list-post-title a {
 	color: #aaa;
 }
 
-footer {
-	padding-top: 20px;
-}
 
 #wrap {
 	/**background-image: url("/static/image/bg.png");**/
@@ -356,6 +353,10 @@ a.item_node {
 	height: 10px;
 }
 
+.sep20 {
+	height: 20px;
+}
+
 .inner {
 	padding: 10px;
 	font-size: 14px;
@@ -365,4 +366,27 @@ a.item_node {
 
 .snow {
 	color: #e2e2e2;
+}
+
+#bottom {
+	border-top: 1px solid rgba(0, 0, 0, 0.22);
+	background-color: #fff;
+	text-align: center;
+	color: #999;
+	padding: 0px 10px 0px 10px;
+}
+
+.content {
+	min-width: 600px;
+	max-width: 1100px;
+	margin: 0px auto 0px auto;
+}
+
+strong {
+	font-weight: bold;
+}
+
+p.black {
+	color: black;
+	
 }

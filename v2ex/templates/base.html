@@ -96,8 +96,11 @@
     </div>
 </div>
 <footer id="footer">
-    <div class="container clearfix">
-       <!-- <div class="inner"> -->
+   
+    <div id="bottom">
+        <div class="content">
+       <div class="inner">
+            <div class="sep10"></div>
             <strong>
                 <a href="#" class="dark" target="_self">关于</a>  
                 &nbsp;
@@ -111,13 +114,21 @@
                 &nbsp;
                 <span class="snow">.</span>
                  &nbsp;
-                 <a href="#" class="dark" target="_self">当前在线人数: {{ online | length }}</a>
+                 <a href="#" class="dark" target="_self">{{ online | length }} 人在线</a>
+                 &nbsp;
+                 <a href="#" class="dark" target="_self">最高记录: {{ online | length }}</a>
                  &nbsp;
             </strong>
-            <p class="center-guo">@copyright by guoweikuang2015@gmail.com</p>
-       <!-- </div> -->
+
+            <div class="sep20"></div>
+            旨在为Python程序员提供一个自由、开放的社区
+            <div class="sep10"></div>
+            <p>Designed by Guoweikuang</p>
+       </div> 
+    </div>
     </div>
 </footer>
+
 {% endblock %}
 
 

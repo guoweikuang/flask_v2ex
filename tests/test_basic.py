@@ -3,21 +3,34 @@
 Test for v2ex
 """
 import unittest
+from flask import current_app
 from v2ex.models import User 
-from v2ex import db
+from v2ex import db, create_app
 
 
-class BasicTest(unittest.TestCase):
+class BasicTestCase(unittest.TestCase):
     """测试用例"""
     def setUp(self):
-        pass
+        self.app = create_app('testing')
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
 
     def tearDown(self):
-        pass
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
 
-    def test_password_setter(self):
-        user = User(username='guo', mail='15602200534@163.com', password='2014081029')
-        self.assertTrue(user.password_hash is not None)
+    def test_app_exists(self):
+        self.assertFalse(current_app is None)
+
+    def test_app_is_testing(self):
+        print(current_app.config["TESTING"])
+        self.assertTrue(current_app.config["TESTING"])
+
+    # def test_password_setter(self):
+    #     user = User(username='guo', mail='15602200534@163.com', password='2014081029')
+    #     self.assertTrue(user.password_hash is not None)
 
 
 if __name__ == '__main__':
