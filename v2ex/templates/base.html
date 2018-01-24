@@ -16,6 +16,9 @@
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">-->
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 {{ moment.include_moment() }}
 {{moment.lang('zh-CN')}}
 {% endblock %}
@@ -84,13 +87,13 @@
 <div id="wrap">
     <div class="container" id="main">
         <div class="row">
+            {% block page_content %}
             {% for message in get_flashed_messages() %}
             <div class="alert alert-warning">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {{ message }}
             </div>
             {% endfor %}
-            {% block page_content %}
             {% endblock %}
         </div>
     </div>
@@ -114,9 +117,9 @@
                 &nbsp;
                 <span class="snow">.</span>
                  &nbsp;
-                 <a href="#" class="dark" target="_self">{{ online | length }} 人在线</a>
+                 <a href="#" class="dark" target="_self">{{  online_user | length }} 人在线</a>
                  &nbsp;
-                 <a href="#" class="dark" target="_self">最高记录: {{ online | length }}</a>
+                 <a href="#" class="dark" target="_self">最高记录: {{ online_user | length }}</a>
                  &nbsp;
             </strong>
 

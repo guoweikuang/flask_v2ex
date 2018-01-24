@@ -47,7 +47,7 @@ class Config(object):
     WHOOSH_BASE = "whoosh_index"
     WHOOSH_ENABLE = True
 
-    PER_PAGE = 20
+    PER_PAGE = 10
 
     ONLINE_LAST_MINUTES = 5
 

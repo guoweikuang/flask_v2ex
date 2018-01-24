@@ -11,7 +11,12 @@
             {% endif %}
 
         {% endfor %}
-        </ul>     
+        </ul>    
+
+        {% if username %}
+        {{ username }} 的话题
+        {% endif %}
+
         {% if node_title %}
             当前节点为 {{ node_title }}，该节点下总共有 {{ node.topics.count() }} 个话题.
         {% endif %}

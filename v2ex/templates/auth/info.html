@@ -11,7 +11,7 @@
         </div>
         <div class="col-xs-10">
             <p class="list-post-title"><strong>@{{user.username}} </strong></p>
-            <p class="list-meta">第 {{user.id}} 用户, {{user.join_time | format_time }} 加入</p>
+            <p class="list-meta">第 {{user.id}} 个用户, {{user.join_time | format_time }} 加入</p>
             {% if user.website %}
             <p class="list-meta"> 个人站点：
             <a target="_blank" href="{{ user.website }}">{{user.website}}</a>

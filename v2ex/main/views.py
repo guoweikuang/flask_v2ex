@@ -16,6 +16,10 @@ from ..utils import add_user_links_in_content, add_notify_in_content, get_conten
 # import redis
 # r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
+@main.context_processor
+def get_online_count():
+    return dict(online_user=get_online_users())
+
 
 @main.before_request
 def mark_current_user_online():
@@ -42,7 +46,6 @@ def index():
     comment_num = get_v2ex_comment_num()
     browse_num = get_v2ex_browse_num()
     top_nodes = get_top_hot_node()
-    print(top_nodes)
     online_users = get_online_users()
 
     return render_template('main/index.html', 
@@ -89,8 +92,6 @@ def create_topic():
     nodes = Node.query.all()
     form = TopicForm(nodes)
     if form.validate_on_submit():
-        print(form.node.data)
-        print(current_user._get_current_object())
         topic = Topic(title=form.title.data,
                       content=form.content.data,
                       user=current_user._get_current_object(),
@@ -219,8 +220,6 @@ def node_view(nid):
 def search(keywords):
     results = search1.whoosh_search(Topic, query=keywords, fields=["title"], limit=20)
     results = Topic.query.msearch(keywords, fields=["title"], limit=20)
-    print(results)
-
 
     per_page = current_app.config["PER_PAGE"]
     page = int(request.args.get("page", 1))

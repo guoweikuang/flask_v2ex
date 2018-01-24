@@ -1,4 +1,5 @@
 alembic==0.9.6
+aniso8601==2.0.0
 astroid==1.5.3
 Babel==2.5.1
 bleach==2.1.1
@@ -19,6 +20,7 @@ Flask-Moment==0.6.0
 flask-msearch==0.1.5
 Flask-PageDown==0.2.2
 flask-paginate==0.5.1
+Flask-RESTful==0.3.6
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.3.2
 Flask-SuperAdmin==1.7.1

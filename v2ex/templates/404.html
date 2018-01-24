@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Page not Found{% endblock %}
+
+{% block page_content %}
+<div class="middle-box text-center animated fadeInDown" >
+    <h1>404</h1>
+    <h3 > 页面未能够找到！! !</h3>
+    <div >
+        抱歉，页面好像去火星啦！
+        <form class="form-inline m-t" role="form">
+            <div class="form-group">
+                <input type="email"  class="form-control" placeholder="请输入你需要查找的内容..." />
+            </div>
+            <button type="submit" class=" btn btn-primary">搜索</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

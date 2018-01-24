@@ -137,6 +137,17 @@ class Topic(db.Model):
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
 
+    def to_json(self):
+        return {
+            "id": self.id,
+            "title": self.title, 
+            "content": self.content, 
+            "create_time": self.create_time,
+            "click_num": self.click_num,
+            "reply_num": self.reply_num,
+            "user_id": self.user_id,
+        }
+        
     def __repr__(self):
         return '<Topic: %s>' % self.title
 

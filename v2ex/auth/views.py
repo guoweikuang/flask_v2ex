@@ -16,7 +16,12 @@ from ..models import User, Topic, Notify
 from ..email import send_email
 from .forms import LoginForm, RegisterForm, ResetPasswordForm, \
     ResetPasswordRequestForm, ChangePasswordForm
+from ..utils import get_online_users
 
+
+@auth.context_processor
+def get_online_count():
+    return dict(online_user=get_online_users())
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -167,12 +172,16 @@ def info(uid):
     topics = user.topics.order_by(Topic.create_time.desc()).limit(per_page+offset)
     totals = user.topics.order_by(Topic.create_time.desc()).all()
     topics = topics[offset: offset+per_page]
+    username = user.username
     pagination = Pagination(page=page, total=len(totals),
                             per_page=per_page,
                             record_name='topics',
                             CSS_FRAMEWORK='bootstrap',
                             bs_version=3)
-    return render_template('auth/info.html', topics=topics, pagination=pagination, user=user)
+    return render_template('auth/info.html', 
+                            topics=topics, 
+                            pagination=pagination, 
+                            user=user, username=username)
     
 
 @auth.route('/notify')
