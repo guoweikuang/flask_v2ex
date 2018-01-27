@@ -4,7 +4,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from markdown import markdown
 import bleach
 
@@ -96,6 +96,17 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %s>' % self.username
 
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+
+    @property
+    def is_adminstrator(self):
+        return False
+
+
+login_manager.anonymous_user = AnonymousUser
 
 class Topic(db.Model):
     __tablename__ = 'topics'
