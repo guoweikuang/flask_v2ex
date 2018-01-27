@@ -17,3 +17,7 @@ __pycache__/
 
 # migrations
 migrations/
+
+# pipfile
+Pipfile
+Pipfile.lock
