@@ -12,7 +12,7 @@
     - [社区界面](#%E7%A4%BE%E5%8C%BA%E7%95%8C%E9%9D%A2)
 
 ## 安装说明
----
+
 ### clone项目到本地或服务器
 ```python
 git clone https://github.com/guoweikuang/flask_v2ex.git
