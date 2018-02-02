@@ -34,7 +34,7 @@ class Config(object):
     MAIL_PORT = 465
     MAIL_USE_SSL = True 
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or '15602200534@163.com'
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'gwk2014081029'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'your password'
     
     # 国际化与本地化
     BABEL_DEFAULT_LOCALE = 'zh_CN'
