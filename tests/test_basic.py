@@ -28,10 +28,6 @@ class BasicTestCase(unittest.TestCase):
         print(current_app.config["TESTING"])
         self.assertTrue(current_app.config["TESTING"])
 
-    # def test_password_setter(self):
-    #     user = User(username='guo', mail='15602200534@163.com', password='2014081029')
-    #     self.assertTrue(user.password_hash is not None)
-
 
 if __name__ == '__main__':
     unittest.main()
