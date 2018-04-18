@@ -120,6 +120,7 @@ def new_topic():
 
 
 @main.route('/topic/<int:tid>', methods=['GET', 'POST'])
+@login_required
 def topic_view(tid):
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))

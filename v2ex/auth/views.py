@@ -23,6 +23,7 @@ from ..utils import get_online_users
 def get_online_count():
     return dict(online_user=get_online_users())
 
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     """登录视图"""
@@ -51,10 +52,9 @@ def register():
     """注册视图"""
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User(
-            email=form.email.data,
-            username=form.username.data,
-            password=form.password.data)
+        user = User(email=form.email.data,
+                    username=form.username.data,
+                    password=form.password.data)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('auth.login'))
