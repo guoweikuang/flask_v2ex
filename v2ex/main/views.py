@@ -10,7 +10,8 @@ from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
 from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis, \
                     get_v2ex_people_num, get_v2ex_topic_num, get_v2ex_comment_num, \
-                    get_v2ex_browse_num, get_top_hot_node, mark_online, get_online_users
+                    get_v2ex_browse_num, get_top_hot_node, mark_online, get_online_users, \
+                    get_top_topic
 
 
 # import redis
@@ -25,6 +26,7 @@ def get_online_count():
 def mark_current_user_online():
     mark_online(request.remote_addr)
 
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
     per_page = current_app.config['PER_PAGE']
@@ -32,6 +34,8 @@ def index():
     offset = (page - 1) * per_page 
     topics = Topic.query.order_by(Topic.create_time.desc()).limit(per_page+offset)
     topics = topics[offset:offset+per_page]
+    if page == 1:
+        topics = get_top_topic(topics)
     pagination = Pagination(page=page, total=Topic.query.count(),
                         per_page=per_page,
                         record_name='topics',
@@ -39,6 +43,7 @@ def index():
                         bs_version=3)
     
     top = get_content_from_redis(key_name="topic", key_type="Topic")
+    nodes = Node.query.all()
     nodes = get_content_from_redis(key_name="nodes", key_type="Node")
 
     people_num = get_v2ex_people_num()

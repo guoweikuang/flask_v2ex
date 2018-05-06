@@ -61,6 +61,12 @@ def register():
     return render_template('auth/register.html', form=form)
 
 
+@auth.route('/confirm')
+@login_required
+def confirm():
+    pass
+
+
 @auth.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     """重置密码"""

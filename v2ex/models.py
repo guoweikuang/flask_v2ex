@@ -119,6 +119,7 @@ class Topic(db.Model):
     last_replied = db.Column(db.DateTime())
     click_num = db.Column(db.Integer, default=0)
     reply_num = db.Column(db.Integer, default=0)
+    top = db.Column(db.Boolean, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     node_id = db.Column(db.Integer, db.ForeignKey('node.id'))
 

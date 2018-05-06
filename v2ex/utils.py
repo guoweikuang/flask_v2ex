@@ -299,3 +299,18 @@ def get_online_users():
     minutes = range(ONLINE_LAST_MINUTES)
     return r.sunion(["v2ex:online:users:%d" % (current - x) for x in minutes])
 
+
+def get_top_topic(topics):
+    """ 处理置顶信息.
+
+    :param topics:
+    :return:
+    """
+    results = []
+    for topic in topics:
+        print(topic.title)
+        if topic.top:
+            results.insert(0, topic)
+        else:
+            results.append(topic)
+    return results
