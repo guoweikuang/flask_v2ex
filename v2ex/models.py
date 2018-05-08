@@ -12,6 +12,13 @@ from . import db
 from . import login_manager
 
 
+class Follow(db.Model):
+    __tablename__ = 'follow'
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +35,18 @@ class User(UserMixin, db.Model):
 
     topics = db.relationship('Topic', backref="user", lazy='dynamic')
     comments = db.relationship("Comment", backref="user", lazy="dynamic")
+
+    followers = db.relationship('Follow',
+                                foreign_keys=[Follow.followed_id],
+                                backref=db.backref('followed', lazy='joined'),
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
+
+    followed = db.relationship('Follow',
+                               foreign_keys=[Follow.follower_id],
+                               backref=db.backref('follower', lazy='joined'),
+                               lazy='dynamic',
+                               cascade='all, delete-orphan')
 
    # unread_notify = db.relationship("Notify", backref="user", lazy="dynamic")
 
@@ -92,6 +111,27 @@ class User(UserMixin, db.Model):
     #     """获取top10话题"""
     #     # TODO: redis 存top，根据策略来更新话题
     #     return Topic.query.order_by(Topic.reply_num.desc()).limit(10)
+
+    def follow(self, user):
+        """ 关注 """
+        if not self.is_following(user):
+            follow = Follow(follower=self, followed=user)
+            db.session.add(follow)
+            #db.session.commit()
+
+    def unfollow(self, user):
+        """ 取消关注 """
+        follow = self.followed.filter_by(followed_id=user.id).first()
+        if follow:
+            db.session.delete(follow)
+
+    def is_following(self, user):
+        user = self.followed.filter_by(followed_id=user.id).first()
+        return user is not None
+
+    def is_followed_by(self, user):
+        user = self.followers.filter_by(follower_id=user.id).first()
+        return user is not None
 
     def __repr__(self):
         return '<User %s>' % self.username
@@ -241,6 +281,7 @@ class Comment(db.Model):
     def user(self):
         return User.query.filter_by(id=self.user_id).first()
 
+
 db.event.listen(Comment.content, 'set', Comment.on_change_body)
 
 
@@ -263,6 +304,3 @@ class Notify(db.Model):
     @property
     def sender(self):
         return User.query.filter_by(id=self.sender_id).first()
-
-
-

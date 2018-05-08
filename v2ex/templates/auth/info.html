@@ -17,6 +17,14 @@
             <a target="_blank" href="{{ user.website }}">{{user.website}}</a>
             </p>
             {% endif %}
+            {% if not current_user.is_following(user) %}
+                <a href="{{ url_for('auth.follow', username=user.username) }}"
+               class="btn btn-primary">关注</a>
+            {% else %}
+            <a href="{{ url_for('auth.unfollow', username=user.username) }}"
+               class="btn btn-primary">取消关注</a>
+            {% endif %}
+
         </div>
     </div>
 </div>

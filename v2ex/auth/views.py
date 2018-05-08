@@ -188,6 +188,46 @@ def info(uid):
                             topics=topics, 
                             pagination=pagination, 
                             user=user, username=username)
+
+
+@auth.route('/follow/<username>')
+@login_required
+def follow(username):
+    """ 关注用户
+
+    :param username:
+    :return:
+    """
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('没有该用户！')
+        return redirect(url_for('main.index'))
+    if current_user.is_following(user):
+        flash('你已经关注了该用户！')
+        return redirect(url_for('auth.info', uid=user.id))
+    current_user.follow(user)
+    flash('你已经关注了%s' % user.username)
+    return redirect(url_for('auth.info', uid=user.id))
+
+
+@auth.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    """ 关注用户
+
+    :param username:
+    :return:
+    """
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('没有该用户！')
+        return redirect(url_for('main.index'))
+    if not current_user.is_following(user):
+        flash('你已经取消关注了该用户！')
+        return redirect(url_for('auth.info', uid=user.id))
+    current_user.unfollow(user)
+    flash('你已经关注了%s' % user.username)
+    return redirect(url_for('auth.info', uid=user.id))
     
 
 @auth.route('/notify')

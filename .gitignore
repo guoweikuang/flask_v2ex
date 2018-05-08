@@ -21,3 +21,7 @@ migrations/
 # pipfile
 Pipfile
 Pipfile.lock
+
+
+#
+static/ckeditor/

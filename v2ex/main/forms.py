@@ -12,6 +12,7 @@ class TopicForm(FlaskForm):
     # nodes_id = [(node.id, node.content) for node in db.session.query(Node).all()]
     title = StringField('标题', validators=[Required(), Length(1, 64)])
     content = PageDownField('内容', validators=[Required()])
+    body = TextAreaField(u'测试', validators=[Required()])
     node = SelectField('节点', coerce=int)
     submit = SubmitField('发布')
 

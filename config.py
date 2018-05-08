@@ -21,7 +21,8 @@ class Config(object):
     # sqlalchemy相关配置
     SECRET_KEY = os.environ.get('SECRET_KEY') or "%^&453969388@#$%^%"
     SQLALCHEMY_RECORD_QUERIES = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = True 
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 
     # 管理员邮箱相关配置
     FLASK_ADMIN = '673411814@qq.com'
