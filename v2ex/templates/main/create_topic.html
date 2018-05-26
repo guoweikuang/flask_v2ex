@@ -22,14 +22,6 @@
         <form class="panel-body" method="post" action="">
             <div class="col-md-4">
                     {{ form.csrf_token }}
-                <!--
-                {{ form.body(class="ckeditor") }}
-                {{ wtf.form_field(form.title) }}
-                {{ wtf.form_field(form.content) }}
-                {{ wtf.form_field(form.body, class_="ckeditor") }}
-                {{ wtf.form_field(form.node) }}
-                {{ wtf.form_field(form.submit) }}
--->
                 {{ wtf.quick_form(form) }}
             </div>
         </form>>

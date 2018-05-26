@@ -237,21 +237,12 @@ def notify():
         notifies = Notify.query.filter_by(receiver_id=current_user.id)
         read = notifies.filter_by(read_flag=True)[0:]
         unread = notifies.filter_by(read_flag=False)[0:]
-        print('=========================================')
-        print(read)
-        print(unread)
-        for u in unread:
-            print(u.read_flag)
-        for r in read:
-            print(r.read_flag)
         for n in notifies:
             if n.read_flag:
                 continue
             n.read_flag = True 
             db.session.add(n)
         db.session.commit()
-        # print(read.count())
-        # print(unread.count())
         return render_template('auth/notify.html', read=read, unread=unread)
     else:
         abort(403)

@@ -245,7 +245,6 @@ def get_v2ex_comment_num():
     key = r.exists(V2EX_COMMENT_NUMS)
     if not key:
         comment_num = Comment.query.count()
-        print(comment_num)
         r.set(V2EX_COMMENT_NUMS, comment_num)
         r.expire(V2EX_COMMENT_NUMS, 60)
         return comment_num
@@ -308,7 +307,6 @@ def get_top_topic(topics):
     """
     results = []
     for topic in topics:
-        print(topic.title)
         if topic.top:
             results.insert(0, topic)
         else:

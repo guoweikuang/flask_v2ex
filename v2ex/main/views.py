@@ -3,7 +3,7 @@ from flask import request, url_for, redirect, render_template, current_app, flas
         abort
 from flask_login import login_required, current_user 
 from flask_paginate import Pagination
-from ..models import db, User, Topic, Node, TopicAppend, Comment
+from ..models import db, User, Topic, Node, TopicAppend, Comment, AnonymousUser
 from . import main 
 from .. import search1
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
@@ -125,7 +125,6 @@ def new_topic():
 
 
 @main.route('/topic/<int:tid>', methods=['GET', 'POST'])
-@login_required
 def topic_view(tid):
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))
@@ -142,18 +141,21 @@ def topic_view(tid):
                             bs_version=3)
 
     form = CommentForm()
-    if form.validate_on_submit():
-        content = add_user_links_in_content(form.content.data)
-        comment = Comment(content=content, 
-                          user=current_user._get_current_object(),
-                          topic=topic)
-        topic.reply_num += 1
-        db.session.add(comment)
+    if not current_user.is_anonymous:
+        if form.validate_on_submit():
+            content = add_user_links_in_content(form.content.data)
+            comment = Comment(content=content,
+                              user=current_user._get_current_object(),
+                              topic=topic)
+            topic.reply_num += 1
+            db.session.add(comment)
+            db.session.commit()
+            add_notify_in_content(form.content.data, current_user.id, tid, comment.id)
+            return redirect(url_for('main.topic_view', tid=tid))
+        topic.click_num += 1
         db.session.commit()
-        add_notify_in_content(form.content.data, current_user.id, tid, comment.id)
-        return redirect(url_for('main.topic_view', tid=tid))
-    topic.click_num += 1
-    db.session.commit()
+    else:
+        flash("请先登录后评论")
     return render_template('main/topic.html', topic=topic, pagination=pagination,
                             comments=comments, form=form)
 

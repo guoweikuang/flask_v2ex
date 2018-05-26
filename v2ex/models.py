@@ -148,6 +148,7 @@ class AnonymousUser(AnonymousUserMixin):
 
 login_manager.anonymous_user = AnonymousUser
 
+
 class Topic(db.Model):
     __tablename__ = 'topics'
     __searchable__ = ["title", "content"]
