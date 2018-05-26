@@ -3,6 +3,8 @@ from flask import jsonify, g, request, current_app, url_for
 from flask_restful import Resource, Api, reqparse
 
 from .. import db
+from ..models import User
+from ..models import Node
 from ..models import Topic
 from ..models import Comment
 from ..models import TopicAppend
@@ -53,6 +55,7 @@ class TopicApi(Resource):
 class TopicIdApi(Resource):
     """get topic by topic_id
     """
+
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('content', type=str, required=True,
@@ -83,6 +86,7 @@ class TopicIdApi(Resource):
 class TopicAppendAPI(Resource):
     """ topic append api.
     """
+
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('content', type=str, required=True,
@@ -105,6 +109,7 @@ class TopicEditAPI(Resource):
     """ topic edit api.
 
     """
+
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('content', type=str, required=True,
@@ -123,14 +128,103 @@ class TopicEditAPI(Resource):
         return jsonify({"status": 200})
 
 
-class HotTopic(Resource):
+class HotTopicAPI(Resource):
     """ top hot topic api.
 
     """
     pass
 
 
+class NodeAPI(Resource):
+    """ node api.
+
+    """
+
+    def get(self):
+        nodes = Node.query.all()
+        if nodes is None:
+            return jsonify({"error": 'no node'})
+        return jsonify({'node': [node.to_json() for node in nodes]})
+
+
+class NodeIdAPI(Resource):
+    """ node id content api.
+
+    """
+
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('page', type=int, required=False,
+                                 help='not append content provided',
+                                 location=['json', 'args', 'headers'],
+                                 default=1)
+        super(NodeIdAPI, self).__init__()
+
+    def get(self, id):
+        # node = Node.query.filter_by(id=id).first_or_404()
+        # page = int(request.args.get('page', 1, type=int))
+        args = self.parser.parse_args()
+        page = args['page']
+        print(page)
+        per_page = current_app.config['PER_PAGE']
+        offset = (page - 1) * per_page
+        topics = Topic.query.filter_by(node_id=id).order_by(
+            Topic.create_time.desc()).limit(per_page + offset)
+        topics = topics[offset:offset + per_page]
+        if not topics:
+            return jsonify({"error": "no topics"})
+        return jsonify({'topic': [topic.to_json() for topic in topics]})
+
+
+class LoginAPI(Resource):
+    """ login API.
+
+    """
+
+    def __init__(self):
+        pass
+
+
+class RegisterAPI(Resource):
+    """ register api.
+
+    """
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('email', type=str, required=True,
+                                 help='not email provided', location='json')
+        self.parser.add_argument('username', type=str, required=True,
+                                 help='not username provided', location='json')
+        self.parser.add_argument('password', type=str, required=True,
+                                 help='not password provided', location='json')
+        self.parser.add_argument('password2', type=str, required=True,
+                                 help='not two password provided', location='json')
+        super(RegisterAPI, self).__init__()
+
+    def post(self):
+        args = self.parser.parse_args()
+        if User.query.filter_by(email=args['email']).first():
+            return jsonify({"error": "邮箱已经被注册"})
+        if User.query.filter_by(username=args['username']).first():
+            return jsonify({"error": "用户名已经被使用"})
+        user = User(email=args['email'],
+                    username=args['username'],
+                    password=args['password'])
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({"status": 200})
+
+
+# 话题相关
 restful_api.add_resource(TopicApi, '/topics')
 restful_api.add_resource(TopicIdApi, "/topic/<int:id>")
 restful_api.add_resource(TopicAppendAPI, "/topic/append/<int:id>")
 restful_api.add_resource(TopicEditAPI, "/topic/edit/<int:id>")
+restful_api.add_resource(HotTopicAPI, "/topic/hot")
+
+# 节点相关
+restful_api.add_resource(NodeAPI, "/nodes")
+restful_api.add_resource(NodeIdAPI, "/node/<int:id>")
+
+# 用户登录注册
+restful_api.add_resource(RegisterAPI, "/register")

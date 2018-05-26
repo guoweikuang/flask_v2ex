@@ -221,6 +221,13 @@ class Node(db.Model):
     description = db.Column(db.Text())
     topics = db.relationship('Topic', backref='node', lazy='dynamic')
 
+    def to_json(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+        }
+
     def __unicode__(self):
         return self.title
 
