@@ -8,6 +8,7 @@ from ..models import Node
 from ..models import Topic
 from ..models import Comment
 from ..models import TopicAppend
+from ..email import send_email
 from ..utils import add_notify_in_content
 from . import api
 from .errors import bad_request, internal_server_error, page_not_found
@@ -215,6 +216,75 @@ class RegisterAPI(Resource):
         return jsonify({"status": 200})
 
 
+class ResetPasswordAPI(Resource):
+    """ reset password api.
+
+    """
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('email', type=str, required=True,
+                                 help='not email provided', location='json')
+        super(ResetPasswordAPI, self).__init__()
+
+    def post(self):
+        args = self.parser.parse_args()
+        user = User.query.filter_by(email=args['email']).first_or_404()
+        if user:
+            token = user.generate_reset_token()
+            send_email(
+                user.email,
+                '重置密码',
+                'auth/email/new_email',
+                user=user,
+                token=token,
+                next=request.args.get('next'))
+            return jsonify({"message": "一封邮件已经发送到你邮箱中，请确认重置密码"})
+        return jsonify({"error": "no user"})
+
+
+class InfoAPI(Resource):
+    """ user info api.
+
+    """
+    @auth.login_required
+    def get(self):
+        info = {}
+        info['email'] = g.current_user.email
+        info['username'] = g.current_user.username
+        info['join_time'] = g.current_user.join_time
+        info['username_url'] = g.current_user.username_url
+        return jsonify(info)
+
+
+class TimeLineAPI(Resource):
+    """ user timeline api.
+
+    """
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('page', type=int, required=False,
+                                 help='not append content provided',
+                                 location=['json', 'args', 'headers'],
+                                 default=1)
+        super(TimeLineAPI, self).__init__()
+
+    @auth.login_required
+    def get(self, id):
+        args = self.parser.parse_args()
+        user = User.query.filter_by(id=id).first_or_404()
+
+        per_page = current_app.config['PER_PAGE']
+        page = args['page']
+        offset = (page - 1) * per_page
+
+        topics = user.topics.order_by(Topic.create_time.desc()).limit(per_page + offset)
+        topics = topics[offset: offset + per_page]
+
+        if not topics:
+            return jsonify({"error": "no topics"})
+        return jsonify({'topic': [topic.to_json() for topic in topics]})
+
+
 # 话题相关
 restful_api.add_resource(TopicApi, '/topics')
 restful_api.add_resource(TopicIdApi, "/topic/<int:id>")
@@ -228,3 +298,10 @@ restful_api.add_resource(NodeIdAPI, "/node/<int:id>")
 
 # 用户登录注册
 restful_api.add_resource(RegisterAPI, "/register")
+restful_api.add_resource(ResetPasswordAPI, "/reset_password")
+
+# 用户中心
+restful_api.add_resource(InfoAPI, "/info")
+
+# 用户时间线
+restful_api.add_resource(TimeLineAPI, "/user/<int:id>/timeline")
