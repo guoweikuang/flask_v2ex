@@ -19,6 +19,10 @@ from ..utils import add_user_links_in_content, add_notify_in_content, get_conten
 
 @main.context_processor
 def get_online_count():
+    """ get online people number.
+
+    :return:
+    """
     return dict(online_user=get_online_users())
 
 
@@ -29,6 +33,10 @@ def mark_current_user_online():
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
+    """ index page view.
+
+    :return:
+    """
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))
     offset = (page - 1) * per_page 
@@ -63,6 +71,10 @@ def index():
 
 @main.route('/topic/hot', methods=['GET', 'POST'])
 def hot():
+    """ hot topic view.
+
+    :return:
+    """
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))
     offset = (page-1) * per_page 
@@ -94,6 +106,10 @@ def hot():
 @main.route('/topic/create', methods=['GET', 'POST'])
 @login_required 
 def create_topic():
+    """ create topic from register user.
+
+    :return:
+    """
     nodes = Node.query.all()
     form = TopicForm(nodes)
     if form.validate_on_submit():
@@ -126,6 +142,11 @@ def new_topic():
 
 @main.route('/topic/<int:tid>', methods=['GET', 'POST'])
 def topic_view(tid):
+    """ topic detail content.
+
+    :param tid: topic id
+    :return:
+    """
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))
     offset = (page - 1) * per_page 
@@ -163,6 +184,11 @@ def topic_view(tid):
 @main.route('/topic/append/<int:tid>', methods=['GET', 'POST'])
 @login_required
 def topic_append(tid):
+    """ topic append view.
+
+    :param tid: topic id
+    :return:
+    """
     topic = Topic.query.filter_by(id=tid).first_or_404()
 
     if current_user.id != topic.user.id:
@@ -178,8 +204,13 @@ def topic_append(tid):
         
 
 @main.route('/topic/edit/<int:tid>', methods=['GET', 'POST'])
-@login_required 
+@login_required
 def topic_edit(tid):
+    """ topic edit view.
+
+    :param tid: topic id
+    :return:
+    """
     topic = Topic.query.filter_by(id=tid).first_or_404()
     nodes = Node.query.all()
     if current_user.id != topic.user.id:
@@ -197,12 +228,21 @@ def topic_edit(tid):
 
 @main.route('/nodes')
 def nodes():
+    """ all node view.
+
+    :return:
+    """
     nodes = Node.query.all()
     return render_template('main/nodes.html', nodes=nodes)
 
 
 @main.route('/node/<int:nid>')
 def node_view(nid):
+    """ node view.
+
+    :param nid: node id
+    :return:
+    """
     node = Node.query.filter_by(id=nid).first_or_404()
     node_title = node.title
     per_page = current_app.config['PER_PAGE']
@@ -226,6 +266,11 @@ def node_view(nid):
 
 @main.route('/search/<keywords>')
 def search(keywords):
+    """ search view .
+
+    :param keywords:
+    :return:
+    """
     results = search1.whoosh_search(Topic, query=keywords, fields=["title"], limit=20)
     results = Topic.query.msearch(keywords, fields=["title"], limit=20)
 
