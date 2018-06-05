@@ -4,45 +4,33 @@
 {% include 'auth/panel.html' %}
 {% endblock %}
 {% block left %}
-<div class="panel panel-default">
-    <div class="topic-heading panel-heading">
-        <div class="row">
-            <a href="{{ url_for('auth.info', uid=topic.user_id) }}" class="col-md-1 pull-right">
-                <img title="{{ current_user.username}}" class="avatar-large pull-right" src="{{ topic.user.avatar_url }}"></a>
-                
-            <div class="col-md-10">
-                    <p class="topic-breadcrumb">
-                        <a href="{{ url_for('main.index') }}">首页</a>  ›   <a href="{{ url_for('main.index') }}">{{ topic.node.title }}</a>
-                    </p>
-                    <h3 class="list-post-title-in-topic">
-                        <a href="{{ url_for('main.topic_view', tid=topic.id)}}" style="color:inherit">{{ topic.title }}</a>
-                    </h3>
-        
-                    <p class="list-meta">
-                        <span class="label label-default list-meta-node"><a href="{{ url_for('main.topic_view', tid=topic.id) }}">{{ topic.node.title }}</a></span>
-                        <span class="list-count">{{ topic.click_num }}</span>
-                        <span class="list-time">{{ topic.create_time | format_time}}</span>
-                        <span class="list-username"><a href="{{ url_for('auth.info', uid=topic.user_id) }}">{{topic.user.username}}</a></span>
-                        {% if current_user.id == topic.user_id %}
-                        <a class="label-success label" href="{{ url_for('main.topic_append', tid=topic.id) }}">追加内容</a>
-                        <a class="label-warning label" href="{{ url_for('main.topic_edit', tid=topic.id) }}">编辑</a>
-                        {% endif %}
-                    </p>
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-10">
+                    <p style="margin-bottom: 10px"><a href="/">V2EX</a> › <a href="{{ url_for('main.index') }}">{{ topic.node.title }}</a></p>
+                    <h1 style="font-size: 24px;">{{ topic.title }}</h1>
+                    <p style="color: #999;margin-bottom: 0px;font-size: smaller"><a href="{{ url_for('auth.info', uid=topic.user_id) }}"> {{ topic.user.username }}</a> · <script>document.write(moment("{{ topic.create_time }}").fromNow());</script> · {{ topic.click_num }} 次点击</p>
                 </div>
-        </div>
-    </div>
-    <div class="panel-body">
-            {{ topic.content_html | safe}}
-        </div>
-
+                <div class="col-1" style="margin-left: 30px">
+                        <a href="{{ url_for('auth.info',uid=topic.user_id) }}"> <img class="rounded" src="{{ topic.user.avatar_url }}" width="73" height="73" /></a>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item" id="post-content">
+            {{ topic.content_html | safe }}
+        </li>
+    </ul>
     {% if topic.appends %}
         <ul class="list-group" id="append">
             {% for a in topic.extract_appends() %}
             {% if not a.deleted %}
-            <div class="list-group-item list-appendix-item">
+            <div class="subtle">
                 <p class="appendix-meta">
-                    第 {{ loop.index }} 追加 {{ a.create_time | format_time }}
+                    第 {{ loop.index }} 条附言 ·  {{ a.create_time | format_time }}
                 </p>
+                <div class="sep5"></div>
                 {{a.content_html | safe}}
             </div>
             {% endif %}
@@ -51,70 +39,62 @@
     {% endif %}
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <p class="panel-title">
-            {% if topic.reply_num %}
-            {{ topic.reply_num }} 条评论
-            {% else %}
-            目前没有评论
-            {% endif %}
-        </p>
-    </div>
-    
-    {% if topic.reply_num %}
-    <ul class="list-group">
+{% if topic.reply_num %}
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" style="font-size: 14px;color: #999;">
+            <p>{{ topic.reply_num }} 回复&nbsp |&nbsp 最后回复时间 {{ topic.create_time }}</p>
+        </li>
         {% for c in comments %}
-            <div class="list-group-item list-topic-item" id="comment-{{c.id}}">
-                <div class="row">
-                    <a href="#" class="col-md-1"><img title="{{ c.user.username}}" class="avatar-middle" src=" {{ c.user.avatar_url }} "></a>
-                    <div class="col-xs-11">
-                        <div class="row">
-                            <div class="reply-author col-sm-10">
-                                <a href="#">{{ c.user.username }}</a>
-                                <span class="list-time">{{c.create_time | format_time}}</span>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-1"><a href="{{ url_for('auth.info',uid=c.user.id) }}"><img src="{{ c.user.avatar_url }}" height="48px" width="48px" class="rounded"></a></div>
+                <div class="col-md-10">
+                    <span class="post-info">
+                        <strong style="color:#4d5256;"><a href="{{ url_for('auth.info',uid=c.user.id) }}"> {{ c.user.username }}</a></strong>
+                        &nbsp • &nbsp<script>document.write(moment("{{ c.create_time }}").fromNow());</script>
+                         <span class="badge badge-secondary pull-right fuck"><a href="#create_reply" data-user="{{c.user.username}}" class="reply label-info label pull-right reply-btn">回复</a></span>
+                        <span class="badge badge-secondary pull-right no"><a href="#create_reply" class="reply">{{ loop.index }}</a></span>
+                    </span>
+                   
+                    <br />
+                    <span style="font-size: 14px">{{ c.content_html | safe }}</span>
 
-                            </div>
-                            <div class="col-sm-2">
-                                {% if current_user.is_authenticated %}
-                                <a href="#create_reply" data-user="{{c.user.username}}" class="label-info label pull-right reply-btn">回复</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="reply-content col-md-11" style="margin-top:0.8em">
-                                {{c.content_html | safe}}
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </li>
         {% endfor %}
     </ul>
-    <div class="panel-footer">
-        {{ pagination.links}}
-    </div>
-    {% else %}
-	<div class="panel-body">
-		<div class="alert alert-info">
-			没有评论
-		</div>
-	</div>
-    {% endif %}
-    
-</div>
 
-<div class="panel panel-default" id="create_reply">
-    <div class="panel-heading">
-		<p class="panel-title">
-			评论
-		</p>
-    </div> 
-    <div class="panel-body">
+</div>
+{% else %}
+<div class="card" id="no-comment">
+    <p class="text-center" style="margin-top: 8px;margin-bottom: 8px;">目前尚无回复</p>
+</div>
+{% endif %}
+
+
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <p style="font-size: 14px;margin-bottom: 0px">添加一条新回复</p>
+        </li>
+        <li class="list-group-item">
+            <div class="form-group" style="margin-bottom: 0px">
+                <div class="panel-body">
         {{ form.csrf_token }}
         {{ wtf.quick_form(form) }}
+        <small class="float-right" style="margin-top: 8px">请尽量让自己的回复能够对别人有帮助</small>
     </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <p class="text-right"><a href="/">← V2EX</a> </p>
+        </li>
+    </ul>
 </div>
+
+<br />
 <script src="{{ url_for('static', filename='js/previewer.js') }}"></script>
 <script src="{{ url_for('static', filename='js/mention.js') }}"></script>
 {% endblock %}

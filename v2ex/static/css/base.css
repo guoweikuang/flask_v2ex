@@ -1,104 +1,281 @@
-a {
-	text-decoration: none !important;
-}
 body {
-    background: #f3f3f3;
+    background-color: #e2e2e2;
+    /*background-image: url('../img/air.png');*/
 }
-p{
-	word-wrap: break-word;
+nav.navbar {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+#nav-search {
+    margin-top: 0px !important;
+}
+#nav-search-input {
+    height: 28px;
+}
+a {
+    color: #778087;
+}
+a:hover {
+    color: #4d5256 !important;
+}
+nav.navbar {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 30px #5a5a5a;
+    min-width: 1080px;
+}
+div.left_main {
+    padding: 0px 0px 0px 0px;
+}
+div.right-main {
+    width: 270px;
+    padding: 0px 0px 0px 0px;
+}
+.container {
+    width: 1080px !important;
+    max-width: none !important;
+}
+.left-main {
+    width: 86% !important;
+}
+#post-type {
+    font-size: 14px;
+    border: none;
+}
+#post-type:hover {
+    border: none;
 }
 
-.list-post-title, .list-meta {
-	margin: 0px;
+#type-link {
+    color: #000000;
+    padding: 5px 8px 5px 8px;
+    margin-right: 7px;
+}
+#type-link:hover {
+    background-color: #f5f5f5;
+    border-radius: 3px;
+}
+#type-link:active {
+    background-color: #001d25;
+    border-radius: 3px;
+    color: #fff;
 }
 
-.list-post-title {
-	font-size: 120%;
-	padding-top: 5px;
+#node-nav {
+    background-color: #f9f9f9;
+    border: none;
+    font-size: 14px;
+    padding: 4px;
+    padding-left: 18px;
+}
+#node-link {
+    color: #000000;
+    padding: 5px 8px 5px 8px;
+    margin-right: 7px;
+}
+#node-link:hover {
+    text-decoration: underline;
 }
 
-.list-post-title-small {
-	font-size: 20%;
-	padding-top: 2px;
+.list-group-item:hover {
+    z-index: 0;
+}
+#post-title {
+    color: #4d5256;
+    text-decoration: none;
+}
+#post-title:hover {
+    text-decoration: underline;
+}
+#index-post-node {
+    /*font-size: 12px;*/
+    color: #999;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    padding: 4px 4px 4px 4px;
+    text-decoration: none;
+    line-height: 12px;
+}
+#index-post-node:hover {
+    text-decoration: none;
+    background-color: #e2e2e2;
+    color: #777;
+}
+.post-node {
+    display: inline-block;
+}
+.post-info {
+    font-size: 12px;
+    color: #ccc;
+    line-height: 200%;
+}
+.card {
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.1);
+    border-bottom: 1px solid #e2e2e2;
+}
+.card-body {
+    padding: 10px 10px 10px 10px;
+}
+#hot-post {
+    margin-top: 20px;
+}
+#card-nav {
+
+}
+ol.breadcrumb {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0 ;
+    background-color: #fff;
+    font-size: 16px;
+}
+#register-form {
+    padding-top: 10px;
+    padding-left: 30px;
+    width: 550px;
+}
+#register-form input {
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    width: 240px;
+    font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB","Microsoft Yahei";
+}
+#register-form label {
+    padding-top: 1px;
+    padding-right: 0px;
+    padding-bottom: 5px;
+    margin-bottom: 0px;
+}
+#user-card .list-group-item {
+    font-size: 14px;
+    padding: 10px 10px 10px 10px;
+}
+#user-card p {
+    margin-bottom: 0px;
+}
+#money {
+    font-size: 11px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #666;
+    text-shadow: 0 1px 0 #fff;
+    display: inline-block;
+    vertical-align: top;
+    background: -webkit-linear-gradient(top,#f5f5f5 0,#e2e2e2 100%);
+}
+.node_header {
+    font-size: 13px;
+    color: #fff;
+    padding: 10px 10px 10px 10px;
+    background-color: #001d25;
+}
+.node_info {
+    padding-left: 30px;
+    padding-right: 0px;
+}
+.node_info div {
+    padding-right: 0px;
+    /*padding-left: 0px;*/
+}
+/* ul.pagination {
+    margin-bottom: 0px;
+} */
+#post-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #000;
+    word-wrap: break-word;
+}
+#post-content img {
+    max-width: 100%;
+}
+#no-comment {
+    background-color: transparent;
+    border: 2px dashed rgba(0,0,0,.1);
+    border-radius: 3px;
+    box-shadow: none;
+    color: rgba(0,0,0,.1);
+}
+.list-group-item {
+    padding: 12px 12px 12px 12px;
+}
+p {
+    margin-bottom: 0px;
+    color: #999;
+}
+#star-node {
+    background-color: #f9f9f9;
+    margin: 0px;
+    padding: 4px;
+}
+#star-node:hover {
+    box-shadow: 0 1px 2px rgba(0,0,0,.1) inset;
+}
+#node-info p{
+    color: #fff;
+}
+#new-post .list-group-item {
+    padding: 10px;
+}
+#new-post p{
+    font-size: 14px;
 }
 
-.avatar-middle {
-	width: 48px;
-	height: 48px;
+#new-post-content {
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: 0;
+    font-size: 14px;
+    padding: 10px;
+    font-family: 'Helvetica Neue','Hiragino Sans GB','Microsoft Yahei',sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+}
+#choice-node {
+    background-color: #f5f5f5;
+    font-size: 12px;
+    line-height: 12px;
+    display: inline-block;
+    padding: 4px 4px 4px 4px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    text-decoration: none;
+    color: #999;
+}
+#choice-node:hover {
+    background-color: #e2e2e2;
+}
+#view-post p{
+    color: #000011;
 }
 
-.avatar-large {
-	width: 80px;
-	height: 80px;
+.cell {
+	padding: 10px;
+	font-size: 16px;
+	line-height: 120%;
+	text-align: left;
+	border-bottom: 1px solid #e2e2e2;
+	font-weight: bold;
 }
 
-.list-reply-count {
-	margin-top: 15px;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-/*.label {*/
-/*border: 1px solid #000;*/
-/*}*/
-
-.label a {
-	color: #F5F5F5;
-}
-
-.label-node {
+a.item_node {
+	font-size: 13px;
+	line-height: 14px;
+	padding: 4px 10px 4px 10px;
+	margin: 0px 5px 5px 0px;
+	border-radius: 16px;
 	display: inline-block;
-	line-height: 1.6;
-	background: #999;
-	margin-bottom: 10px;
+	border: 1px solid #e5e5e5;
 }
 
-h3.list-post-title a {
-	text-decoration: none;
-	color: #333;
-}
-
-.list-topic-item:hover {
-	background-color: #f5f5f5;
-}
-
-.list-count::before, .list-time::before, .list-username::before, .list-reply-count-xs::before {
-	content: '\2022';
-	margin-right: 5px;
-}
-
-.list-username a {
-	color: #666;
-}
-
-.list-meta {
-	color: #aaa;
-}
-
-
-#wrap {
-	/**background-image: url("/static/image/bg.png");**/
-	background-color: #E0E0E0;
-	padding-top: 70px;
-}
-
-ul.pager {
-	margin: 0px;
-}
-
-.padtop {
-	margin-top: 5px;
-}
-
-.list-time {
-	color: #aaa
-}
-
-/* Sticky footer styles
- -------------------------------------------------- */
-
-html, body {
-	height: 100%;
-	/* The html and body elements cannot have any padding or margin. */
+/* Set the fixed height of the footer here */
+footer {
+	height: 50px;
+	background-color: #FEFEFE;
 }
 
 /* Wrapper for page content to push down footer */
@@ -109,128 +286,6 @@ html, body {
 	margin-bottom: -50px;
 	/* Pad bottom by footer height */
 	padding-bottom: 50px;
-}
-
-/* Set the fixed height of the footer here */
-footer {
-	height: 50px;
-	background-color: #FEFEFE;
-}
-
-#content {
-	height: 120px;
-}
-
-.pagination {
-	margin: 0px;
-}
-
-.appendix-meta {
-	font-size: 12px;
-	line-height: 120%;
-	text-align: left;
-	color: #ccc;
-}
-
-.list-appendix-item {
-	background: #FFFFF9;
-	border-left: 3px solid #FFFBC1 !important;
-}
-
-.panel-body {
-	padding: 15px;
-}
-
-.panel-body:before, .panel-body:after {
-	display: table;
-	content: " ";
-}
-
-.panel-body:after {
-	clear: both;
-}
-
-.panel-body:before, .panel-body:after {
-	display: table;
-	content: " ";
-}
-
-.panel-body:after {
-	clear: both;
-}
-
-.list-meta-node {
-	background-color: #F5F5F5;
-}
-
-.list-meta-node a {
-	color: #AAA;
-}
-
-.list-reply-count {
-	background-color: #C0C0C0;
-}
-
-.topic-heading {
-	background-color: #FFF !important;
-}
-
-.list-post-title-in-topic {
-	font-size: 180%;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	margin-top: 0px;
-}
-
-@media (max-width: 768px) {
-	.list-reply-count-xs {
-		display: inline-block !important;
-	}
-	.list-username {
-		display: none;
-	}
-}
-
-.topic-breadcrumb, .topic-breadcrumb a {
-	margin: 0px;
-	color: #AAAAAA;
-}
-
-body {
-	font-family: "WenQuanYi Micro Hei", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-html, html a {
-	-webkit-font-smoothing: antialiased;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-}
-
-.title-breadcrumb a {
-	color: #428bca;
-}
-
-.title-breadcrumb span:before {
-	content: "/\00a0";
-	padding: 0 5px;
-	color: #ccc;
-}
-
-a.add-new-btn {
-	line-height: 12px;
-	color: #FFF;
-}
-
-p > img {
-    max-width:100%;
-    /* This centers the image */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-.panel-body p{
-	font-size: 16px;
-    font-family: Monaco, Courier, sans-serif, Arial, "Microsoft YaHei";
-    line-height: 1.5;
 }
 
 blockquote
@@ -244,109 +299,23 @@ blockquote
 }
 
 .pagination-page-info {
-    padding:.6em;
-    padding-left:0;
-    width:40em;
-    margin:.5em;
-    margin-left:0;
-    font-size:12px;
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 12px;
 }
 .pagination-page-info b {
     color: black;
     background: #6aa6ed;
-    padding-left:2px;
-    padding:.1em .25em;
-    font-size:150%;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
 }
 
-/* make twitter bootstrap menu dropdown on hover rather than click
- * Refer to:
- * http://stackoverflow.com/questions/8878033/how-to-make-twitter-bootstrap-menu-dropdown-on-hover-rather-than-click
- */
-@media (min-width: 979px) {
-    ul.nav li.dropdown:hover > ul.dropdown-menu {
-        display: block;
-    }
-}
-
-.watermark
-{
-    position:absolute;
-    left: 50%;
-    top: 20px;
-    z-index: 99999;
-    opacity:0.9;
-    color:red;
-}
-
-.blocked
-{
-    opacity: 0.5;
-    background-color: rgba(243, 205, 205, 0.5);
-}
-
-.fa-3x{
-    font-size: 3em;
-}
-
-/* #wrap {
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0 auto -80px;
-  } */
-
-#fuck {
-    background: #fff;
-    width: 730px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-
-.page-header {
-	text-align: center;
-}
-
-
-.center-guo {
-	text-align: center;
-}
-
-
-.cell {
-	padding: 10px;
-	font-size: 16px;
-	line-height: 120%;
-	text-align: left;
-	border-bottom: 1px solid #e2e2e2;
-	font-weight: bold;
-}
-
-.add_bold {
-	font-weight: bold;
-	color: black;
-}
-
-.gray {
-	color: gray;
-}
-
-table {
-    display: table;
-    border-collapse: separate;
-    border-spacing: 2px;
-    border-color: grey;
-}
-
-a.item_node {
-	font-size: 14px;
-	line-height: 14px;
-	padding: 4px 10px 4px 10px;
-	margin: 0px 5px 5px 0px;
-	border-radius: 16px;
-	display: inline-block;
-	border: 1px solid #e5e5e5;
+.sep5 {
+    height: 5px;
 }
 
 .sep10 {
@@ -359,7 +328,7 @@ a.item_node {
 
 .inner {
 	padding: 10px;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 150%;
 	text-align: left;
 }
@@ -389,4 +358,82 @@ strong {
 p.black {
 	color: black;
 	
+}
+
+.subtle {
+    background-color: #fffff9;
+    border-left: 3px solid #fffbc1;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 120%;
+    text-align: left;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.no {
+    font-size: 9px;
+    line-height: 9px;
+    font-weight: 500;
+    border-radius: 10px;
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #ccc;
+    padding: 2px 5px 2px 5px;
+    cursor: pointer;
+}
+
+.fuck {
+    position: absolute;
+    float: right;
+    right: 0px;
+}
+
+span.pull-right {
+    float: right!important;
+}
+
+.label-info {
+    color: #f0f0f0;
+}
+
+.reply {
+    color: #f0f0f0; 
+}
+
+.msl {
+    width: 100%;
+    border: none;
+    resize: none;
+    background-color: #f9f9f9;
+    outline: 0;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 10px;
+    font-family: 'Helvetica Neue','Hiragino Sans GB','Microsoft Yahei',sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.CodeMirror-scroll {
+    overflow: scroll !important;
+    margin-bottom: -30px;
+    margin-right: -30px;
+    padding-bottom: 30px;
+    height: 100%;
+    outline: none;
+    position: relative;
+}
+
+#new-post-content {
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: 0;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 10px;
+    font-family: 'Helvetica Neue','Hiragino Sans GB','Microsoft Yahei',sans-serif;
+    margin: 0;
+    box-sizing: border-box;
 }

@@ -10,7 +10,11 @@
 
 {% block right %}
 {% include 'auth/panel.html' %}
+{% include "main/hot_topic.html" %}
+{% include "main/hot_node.html" %}
+{% include "main/community_status.html" %}
 {% endblock %}
+
 {% block left %}
 {% include 'main/list.html' %}
 {% endblock %}

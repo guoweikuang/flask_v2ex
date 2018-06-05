@@ -1,0 +1,13 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <p style="font-size: 10px;">今日热议话题</p>
+        </li>
+        {% for tid, title in top %}
+        <li class="list-group-item">
+            <a href="#"> <img src="{{ current_user.avatar_url }}" width="24" height="24" /></a>
+            <small style="color: #999;"><a href="{{ url_for('main.topic_view', tid=tid) }}"> {{ title }}</a></small>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

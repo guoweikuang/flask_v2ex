@@ -50,12 +50,12 @@ def create_app(config_name):
     babel.init_app(app)
 
     # admin.add_view(AdminModelView(User, db.session, name="管理员"))
-    admin.add_view(UserView(User, db.session, name="用户"))
-    admin.add_view(TopicView(Topic, db.session, name="话题"))
-    admin.add_view(TopicAppendView(TopicAppend, db.session, name="话题追加"))
-    admin.add_view(NodeView(Node, db.session, name="节点"))
-    admin.add_view(NotifyView(Notify, db.session, name="提醒"))
-    admin.add_view(CommentView(Comment, db.session, name="评论"))
+    #admin.add_view(UserView(User, db.session, name="用户"))
+    #admin.add_view(TopicView(Topic, db.session, name="话题"))
+    #admin.add_view(TopicAppendView(TopicAppend, db.session, name="话题追加"))
+    #admin.add_view(NodeView(Node, db.session, name="节点"))
+    #admin.add_view(NotifyView(Notify, db.session, name="提醒"))
+    #admin.add_view(CommentView(Comment, db.session, name="评论"))
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')

@@ -1,0 +1,88 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        {% if current_user.is_authenticated %}
+        <div class="row">
+            <a class="col-xs-4"><img title="{{ current_user.username }}" class="avatar-large" src="{{ current_user.avatar_url }}"></title></a>
+            <div class="col-xs-8">
+                <p class="list-post-title"><strong>{{ current_user.username }}</strong></p>
+                <p class="list-meta" style="margin-top: 1em">第 {{ current_user.id }} 个用户</p>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1em">
+            <div class="col-xs-4">
+                <a href="{{ url_for("auth.info", uid=current_user.id)}}" class="btn btn-block"> <span class="glyphicon glyphicon-home"></span> 主页</a>
+            </div>
+
+            <div class="col-xs-4">
+                <a href="{{ url_for('auth.change_password') }}" class="btn btn-block"> <span class="glyphicon glyphicon-cog"></span> 设置</a>
+            </div>
+
+            <div class="col-xs-4">
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-block"> <span class="glyphicon glyphicon-log-out"></span> 登出</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="list-post-title text-center"><strong>Python社区</strong></div>
+        <div class="row" style="margin: 1em 0 0 1em">
+            <p class="list-meta">Welcome to Python社区</p>
+            <p class="list-meta">这里可以讨论任何关于技术的东西</p>
+        </div> 
+        {% endif %}
+    </div>
+
+    {% if current_user.is_authenticated %}
+        {% if current_user.extract_unread_notify() %}
+        <div class="panel-footer">
+            <span class="notification"><a href="{{ url_for('auth.notify') }}">{{current_user.extract_unread_notify() }} 条新消息</a></span>
+        </div>
+        {% else  %}
+        <div class="panel-footer">
+            <span class="notification"><a href="{{ url_for('auth.notify') }}">站内消息</a></span>
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-footer">
+            <span class="notification"><a href="{{ url_for('auth.notify') }}">今日热议主题</a></span>
+        </div>
+    <div class="list-group">
+    {% for tid, title in top %}
+    <p class="list-meta">
+
+        <a href="{{ url_for('main.topic_view', tid=tid) }}" class="list-group-item">{{ title }}</a>
+        </p>
+    {% endfor %}
+        
+    </div>
+</div>
+
+<div class="panel panel-default">
+        {% if top_nodes %}
+        <div class="panel-footer">
+                <span class="notification"><a href="#">最热节点</a></span>
+            </div>
+            <div class="cell">
+                {% for nid, node in top_nodes %}
+                <a href="url_for('main.node_view', nid=nid)" class="item_node">{{ node[0] }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+{% if topic_num %}
+<div class="panel panel-default">
+    <div class="panel-footer">
+            <span class="notification"><a href="#">社区运行情况</a></span>
+        </div>
+        <div class="cell">
+           
+            <p class="list-meta">主题： <span class="add_bold">{{ topic_num }}</span></p> 
+            <p class="list-meta">评论： <span class="add_bold">{{ comment_num }}</span> </p>
+            <p class="list-meta">浏览：<span class="add_bold">    {{ browse_num }}</span></p>
+            <p class="list-meta">会员： <span class="add_bold">{{ people_num }}</span></p>
+        </div>
+  
+</div>
+{% endif %}

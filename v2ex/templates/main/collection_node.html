@@ -1,0 +1,17 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <p style="font-size: 10px;">我收藏的节点</p>
+        </li>
+    {% if current_user.is_authenticated %}
+    <li class="list-group-item" style="padding: 6px">
+    {% for c in current_user.collectnodes.all() %}
+    <div class="card-body" id="star-node">
+        <a href="{{ url_for('main.node',name=c.node.name) }}"> <img src="{{ url_for('static',filename='img/node') }}/{{ c.node.avatar }}" width="24" height="24" /></a>
+        <small style="color: #999;"><a href="{{ url_for('main.node',name=c.node.name) }}"> {{ c.node.name }}</a></small>
+    </div>
+    {% endfor %}
+    </li>
+    {% endif %}
+    </ul>
+</div>

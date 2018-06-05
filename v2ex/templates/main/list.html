@@ -1,67 +1,50 @@
-<div class="panel panel-default">
-    <div class="panel-heading title-breadcrumb">
-        <ul class="nav nav-pills">
-        {% for nid, title in nodes %}
-            {% if title == "技术" %}
-            <li role="presentation" class="active"><a href="{{ url_for('main.node_view', nid=nid) }}">{{ title }}</a>
-            </li>
-            {% else %}
-            <li role="presentation"><a href="{{ url_for('main.node_view', nid=nid) }}">{{ title }}</a>
-            </li>
-            {% endif %}
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <ul class="nav" id="post-type">
+                {% for nid, t in nodes %}
+                <li class="nav-item">
+                    <a href="{{ url_for('main.node_view', nid=nid) }}" class="btn btn-{% if t=="技术" %}dark{% else %}light{% endif %} 
+                    btn-sm" tabindex="-1" role="button" style="margin-right: 10px;{% if t=="技术" %}color: #ffffff !important;{% endif %}">{{ t }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li class="list-group-item" id="node-nav">
+            <ul class="nav" id="node">
+                {% for nid, t in nodes %}
+                <li class="nav-item">
+                    <a class="nav-link" id="node-link" href="{{ url_for('main.node_view', nid=nid)}}">{{ t }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% for p in topics %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-1"><a href="url_for('auth.info', uid=p.user_id)"><img src="{{ p.user.avatar_url }}" height="48px" width="48px" class="rounded" /></a>  </div>
+                <div class="col-md-10">
+                    <span class="post-title"><a href="{{ url_for('main.topic_view', tid=p.id) }}">{{ p.title }}</a></span><br />
+                    <span class="post-info">
+                        <div class="post-node"><a href="#" id="index-post-node">{{ p.node.title }}</a></div>&nbsp • &nbsp
+                        <strong style="color:#4d5256;"><a href="{{ url_for('main.topic_view', tid=p.id) }}"> {{ p.user.username }}</a></strong>
+                        &nbsp • &nbsp<script>document.write(moment("{{ p.create_time }}").fromNow());</script>
 
-        {% endfor %}
-        </ul>    
-
-        {% if username %}
-        {{ username }} 的话题
-        {% endif %}
-
-        {% if node_title %}
-            当前节点为 {{ node_title }}，该节点下总共有 {{ node.topics.count() }} 个话题.
-        {% endif %}
-    </div>
-    
-
-    {% if not topics %}
-    <div class="panel-body">
-		<div class="alert alert-info">
-			没有新话题，去添加吧！！
-		</div>
-    </div>
-    {% else %}
-    <ul class="list-group">
-        {% for t in topics %}
-            <div class="list-group-item list-topic-item" id="{{ t.id }}">
-                <div class="row">
-                    <a href="{{ url_for('auth.info', uid = t.user_id) }}" class="col-md-1 col-xs-2 col-sm-2">
-                        <img title="{{t.user.username}}" class="avatar-middle" src="{{ t.user.avatar_url }}"></a>
-                
-                    <div class="col-xs-9 col-md-10 col-sm-9">
-                        <h3 class="list-post-title"><a href="{{ url_for('main.topic_view', tid=t.id) }}">{{t.title}}</a></h3>
-                        <p class="list-meta">
-                            {% if t.top %}
-                                <span class="label label-success">置顶</span>
-                            {% endif %}
-                            <span class="label label-default list-meta-node"><a href="{{ url_for('main.topic_view', tid=t.id) }}">{{ t.node.title }}</a></span>
-                            <span class="list-count"> {{t.click_num }} 点击数</span>
-                            <span class="list-time">{{ moment(t.create_time, local=True).fromNow(refresh=True) }}</span>
-                            <span class="list-username"><a href="{{ url_for('auth.info', uid=t.user_id) }}">{{ t.user.username }}</a></span>
-                            <span class="list-reply-count-xs visible-xs">{{ t.reply_num }}</span>
-                        </p>
-                    </div>
-                    <div class="col-xs-1 col-sm-1">
-						<span class="badge pull-right list-reply-count hidden-xs">{{t.reply_num }}</span>
-					</div>
+                    </span>
                 </div>
-
-
+                <div class="col-md-1"><span class="badge badge-pill badge-info">{{ p.reply_num }}</span></div>
             </div>
+        </li>
         {% endfor %}
+    </ul>
+
+    <div class="card-footer">
+        更多新主题
+    </div>
 
     <div class="panel-footer">
         {{ pagination.links }}
-	</div>
-    {% endif %}
-    </ul>
+        </div>
+
 </div>
+<br />

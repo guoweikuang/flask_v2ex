@@ -1,6 +1,6 @@
 <html>
 {% extends "bootstrap/base.html" %}
-{% block title %}V2EX-Flask{% endblock %}
+
 
 {% block scripts %}
 {{ super() }}
@@ -9,81 +9,74 @@
 {% endblock %}
 
 {% block head %}
-{{ super() }}
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<!--<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">-->
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-<!--<link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">-->
-<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
-    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
-{{ moment.include_moment() }}
-{{moment.lang('zh-CN')}}
+
+<head>
+    <meta charset="UTF-8">
+{#    <meta name="viewport"#}
+{#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
+<link rel="shortcut icon" href="{{ url_for('static', filename='CN_V2EX.svg') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{#    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>#}
+    <script src="{{ url_for('static',filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/moment-with-locales.min.js') }}"></script>
+    <script>moment.locale('zh-cn');</script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="{{ url_for('static',filename='css/base.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static',filename='js/base.js') }}"></script>
+ <!--   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"> -->
+    <title>V2EX{% block title %}{% endblock %}</title>
+</head>
 {% endblock %}
 
 <body>
 {% block navbar %}
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class ="navbar-header">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">首页 </a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('main.hot') }}">热点话题 </a></li>
-                <li><a href="{{ url_for('main.nodes') }}">所有节点 </a></li>
-            </ul>
 
+<nav class="navbar navbar-expand navbar-light">
+  <div class="container">
+      <a class="navbar-brand" href="/">V2EX</a>
+{#      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#      </button>#}
+        <form class="form-inline mr-auto mt-2 mt-lg-0" id="nav-search">
+          <input id="nav-search-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+{#          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
+        </form>
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">首页 <span class="sr-only">(current)</span></a>
+          </li>
             {% if current_user.is_authenticated %}
-            <div class="navbar-form navbar-right">
-                <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <button type="button" class="btn btn-info btn-primary dropdown-toggle" data-toggle="dropdown">
-                            新话题<b class="caret"></b>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url_for('main.create_topic') }}">新话题</a></li>
-                                <li><a href="{{ url_for('auth.change_password') }}">更新密码</a></li>
-                                <li><a href="{{ url_for('auth.logout') }}">登出</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                <!--<a class="btn btn-info" id="new-btn" href="#">新话题 </a>-->
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="#">{{ current_user.username }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">记事本</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">时间轴</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">设置</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">登出</a>
+          </li>
             {% else %}
-            <div class="navbar-form navbar-right">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <button type="button" class="btn btn-info btn-primary dropdown-toggle" data-toggle="dropdown">
-                            登陆<b class="caret"></b>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('auth.login') }}">登陆</a></li>
-                            <li><a href="{{ url_for('auth.register') }}">注册</a></li>
-                            <li><a href="{{ url_for('auth.reset_password') }}">忘记密码</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">登录</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.register') }}">注册</a>
+          </li>
             {% endif %}
-            <div class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                    <input type="text" id="search" class="form-control" name="search" placeholder="输入你的关键词">
-                    <a class="btn btn-default" id="search-btn">
-                        搜索
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+        </ul>
+  </div>
 </nav>
-
 <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 {% endblock %}
-
+<br />
 {% block content %}
 <div id="wrap">
     <div class="container" id="main">
@@ -107,7 +100,7 @@
             <div class="sep10"></div>
             <strong>
                 <a href="#" class="dark" target="_self">关于</a>  
-                &nbsp;
+                &nbsp; 
                 <span class="snow">.</span> 
                 &nbsp;
                 <a href="#" class="dark" target="_self">我们的愿景</a>
@@ -135,12 +128,12 @@
 
 {% endblock %}
 
-
+<!--
 <script src="{{ url_for('static', filename='bootstrap/js/jquery.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/search.js') }}"></script>
-
+-->
 {% block footer_ext %}{% endblock %}
 </body>
 </html>

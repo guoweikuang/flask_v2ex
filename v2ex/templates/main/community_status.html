@@ -1,0 +1,16 @@
+<div class="card">
+{% if topic_num %}
+
+        <li class="list-group-item">
+            <p style="font-size: 10px;">社区运行情况</p>
+        </li>
+        <div class="cell">
+           
+            <p class="list-meta">主题： <span class="add_bold">{{ topic_num }}</span></p> 
+            <p class="list-meta">评论： <span class="add_bold">{{ comment_num }}</span> </p>
+            <p class="list-meta">浏览：<span class="add_bold">    {{ browse_num }}</span></p>
+            <p class="list-meta">会员： <span class="add_bold">{{ people_num }}</span></p>
+        </div>
+
+{% endif %}
+</div>

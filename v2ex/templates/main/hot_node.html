@@ -1,0 +1,11 @@
+
+<div class="card">
+        <li class="list-group-item">
+            <p style="font-size: 10px;">最热节点</p>
+        </li>
+        <div class="cell">
+        {% for nid, node in top_nodes %}
+            <a href="url_for('main.node_view', nid=nid)" class="item_node">{{ node[0] }}</a>
+        {% endfor %}
+        </div>
+</div>

@@ -216,8 +216,16 @@ def get_content_from_redis(key_name, key_type):
     keys = r.lrange(key, 0, 10)
     values = r.lrange(value, 0, 10)
     contents = [(tid, title) for tid, title in zip(keys, values)]
+    # if '技术' not in contents:
+    #     contents.insert(0, (0, '技术'))
     return contents
             
+
+def get_tag():
+    """ 导航栏标签， 一般情况下是固定的 """
+    tags = ['技术','创意','酷工作','交易','城市','问与答','最热','全部','节点关注']
+    tags = [(i+1, title) for i, title in enumerate(tags)]
+    return tags
 
 def get_v2ex_people_num():
     key = r.exists(V2EX_PEOPLE_NUMS)

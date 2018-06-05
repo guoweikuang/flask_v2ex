@@ -11,7 +11,7 @@ from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis, \
                     get_v2ex_people_num, get_v2ex_topic_num, get_v2ex_comment_num, \
                     get_v2ex_browse_num, get_top_hot_node, mark_online, get_online_users, \
-                    get_top_topic
+                    get_top_topic, get_tag
 
 
 # import redis
@@ -48,11 +48,12 @@ def index():
                         per_page=per_page,
                         record_name='topics',
                         CSS_FRAMEWORK='bootstrap',
-                        bs_version=3)
+                        bs_version=4)
     
     top = get_content_from_redis(key_name="topic", key_type="Topic")
     nodes = Node.query.all()
     nodes = get_content_from_redis(key_name="nodes", key_type="Node")
+    nodes = get_tag()
 
     people_num = get_v2ex_people_num()
     topic_num = get_v2ex_topic_num()
