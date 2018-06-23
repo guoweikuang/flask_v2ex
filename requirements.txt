@@ -1,6 +1,7 @@
 alabaster==0.7.10
 alembic==0.9.6
 aniso8601==2.0.0
+arrow==0.12.1
 astroid==1.5.3
 Babel==2.5.1
 bleach==2.1.1

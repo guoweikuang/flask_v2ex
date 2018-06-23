@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-import redis 
+import redis
 
 r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
-
+V2EX_NODES_TOP = "v2ex:nodes:top"
 V2EX_NODES_TOP_KEY = "v2ex:nodes:top:key"
 V2EX_NODES_TOP_VALUE = "v2ex:nodes:top:value"
 
+V2EX_TOPIC_TOP = "v2ex:topic:top"
 V2EX_TOPIC_TOP_KEY = "v2ex:topic:top:key"
 V2EX_TOPIC_TOP_VALUE = "v2ex:topic:top:value"
 

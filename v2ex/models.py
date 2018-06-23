@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import arrow
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -62,13 +63,13 @@ class User(UserMixin, db.Model):
         if isinstance(self, AnonymousUserMixin):
             return False
         else:
-            return True 
-    
+            return True
+
     def is_administator(self):
         if not self.is_superuser:
-            return False 
+            return False
         else:
-            return True 
+            return True
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
@@ -133,6 +134,16 @@ class User(UserMixin, db.Model):
         user = self.followers.filter_by(follower_id=user.id).first()
         return user is not None
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'avatar_url': self.avatar_url,
+            'join_time': arrow.get(self.join_time).format('YYYY-MM-DD HH:mm:SS'),
+            'username_url': self.username_url,
+        }
+
     def __repr__(self):
         return '<User %s>' % self.username
 
@@ -193,14 +204,15 @@ class Topic(db.Model):
     def to_json(self):
         return {
             "id": self.id,
-            "title": self.title, 
-            "content": self.content, 
-            "create_time": self.create_time,
+            "title": self.title,
+            "content": self.content,
+            "create_time": arrow.get(self.create_time).format("YYYY-MM-DD HH:mm:SS"),
             "click_num": self.click_num,
             "reply_num": self.reply_num,
             "user_id": self.user_id,
+            "user_avatar": self.user.avatar_url,
         }
-        
+
     def __repr__(self):
         return '<Topic: %s>' % self.title
 
@@ -235,8 +247,8 @@ class Node(db.Model):
 class TopicAppend(db.Model):
     """追加内容"""
     def __init__(self, content, topic_id):
-        self.content = content 
-        self.topic_id = topic_id 
+        self.content = content
+        self.topic_id = topic_id
         self.create_time = datetime.now()
 
     __tablename__ = 'append'
@@ -272,7 +284,7 @@ class Comment(db.Model):
     content = db.Column(db.Text())
     content_html = db.Column(db.Text())
     create_time = db.Column(db.DateTime(), default=datetime.utcnow)
-    
+
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     topic_id = db.Column(db.Integer, db.ForeignKey("topics.id"))
 

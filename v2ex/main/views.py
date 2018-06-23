@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import request, url_for, redirect, render_template, current_app, flash,\
         abort
-from flask_login import login_required, current_user 
+from flask_login import login_required, current_user
 from flask_paginate import Pagination
 from ..models import db, User, Topic, Node, TopicAppend, Comment, AnonymousUser
-from . import main 
+from . import main
 from .. import search1
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
@@ -39,7 +39,7 @@ def index():
     """
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))
-    offset = (page - 1) * per_page 
+    offset = (page - 1) * per_page
     topics = Topic.query.order_by(Topic.create_time.desc()).limit(per_page+offset)
     topics = topics[offset:offset+per_page]
     if page == 1:
@@ -49,7 +49,7 @@ def index():
                         record_name='topics',
                         CSS_FRAMEWORK='bootstrap',
                         bs_version=4)
-    
+
     top = get_content_from_redis(key_name="topic", key_type="Topic")
     nodes = Node.query.all()
     nodes = get_content_from_redis(key_name="nodes", key_type="Node")
@@ -62,8 +62,8 @@ def index():
     top_nodes = get_top_hot_node()
     online_users = get_online_users()
 
-    return render_template('main/index.html', 
-                            pagination=pagination, 
+    return render_template('main/index.html',
+                            pagination=pagination,
                             topics=topics, nodes=nodes, top=top,
                             people_num=people_num, topic_num=topic_num,
                             browse_num=browse_num, comment_num=comment_num,
@@ -78,7 +78,7 @@ def hot():
     """
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))
-    offset = (page-1) * per_page 
+    offset = (page-1) * per_page
 
     topics = Topic.query.order_by(Topic.reply_num.desc()).limit(per_page+offset)
     topics = topics[offset: offset+per_page]
@@ -96,16 +96,16 @@ def hot():
     top_nodes = get_top_hot_node()
     online_users = get_online_users()
 
-    return render_template('main/index.html', 
-                            pagination=pagination, 
-                            topics=topics, nodes=nodes, top=top, 
-                            topic_num=topic_num, people_num=people_num, 
+    return render_template('main/index.html',
+                            pagination=pagination,
+                            topics=topics, nodes=nodes, top=top,
+                            topic_num=topic_num, people_num=people_num,
                             browse_num=browse_num, comment_num=comment_num,
                             top_nodes=top_nodes, online=online_users)
 
 
 @main.route('/topic/create', methods=['GET', 'POST'])
-@login_required 
+@login_required
 def create_topic():
     """ create topic from register user.
 
@@ -126,7 +126,7 @@ def create_topic():
 
 
 @main.route('/topic/new', methods=['GET', 'POST'])
-@login_required 
+@login_required
 def new_topic():
     nodes = Node.query.all()
     form = PostForm(nodes)
@@ -150,7 +150,7 @@ def topic_view(tid):
     """
     per_page = current_app.config['PER_PAGE']
     page = int(request.args.get('page', 1, type=int))
-    offset = (page - 1) * per_page 
+    offset = (page - 1) * per_page
 
     topic = Topic.query.filter_by(id=tid).first_or_404()
     comments = topic.comments.order_by(Comment.create_time.desc()).limit(per_page+offset)
@@ -202,7 +202,7 @@ def topic_append(tid):
         db.session.commit()
         return redirect(url_for('main.topic_view', tid=tid))
     return render_template('main/append.html', topic=topic, form=form)
-        
+
 
 @main.route('/topic/edit/<int:tid>', methods=['GET', 'POST'])
 @login_required
@@ -216,10 +216,10 @@ def topic_edit(tid):
     nodes = Node.query.all()
     if current_user.id != topic.user.id:
         abort(403)
-    
+
     form = AppendPostForm()
     if form.validate_on_submit():
-        topic.content = form.content.data 
+        topic.content = form.content.data
         db.session.add(topic)
         db.session.commit()
         return redirect(url_for('main.topic_view', tid=tid))
@@ -253,13 +253,13 @@ def node_view(nid):
     topics = Topic.query.filter_by(node_id=nid).order_by(
         Topic.create_time.desc()).limit(per_page+offset)
     topics = topics[offset:offset+per_page]
-    pagination = Pagination(page=page, 
+    pagination = Pagination(page=page,
                         total=Topic.query.filter_by(node_id=nid).count(),
                         per_page=per_page,
                         record_name="comments",
                         CSS_FRAMEWORK="bootstrap",
                         bs_version=3)
-    return render_template('main/node_view.html', 
+    return render_template('main/node_view.html',
                             topics=topics,
                             node_title=node_title,
                             pagination=pagination, node=node)
@@ -279,7 +279,7 @@ def search(keywords):
     page = int(request.args.get("page", 1))
     offset = (page-1) * per_page
     topics = results[offset:offset+per_page]
-    pagination = Pagination(page=page, 
+    pagination = Pagination(page=page,
                     total=results.count(),
                     per_page=per_page,
                     record_name="comments",
