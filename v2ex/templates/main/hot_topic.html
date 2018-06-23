@@ -3,10 +3,10 @@
         <li class="list-group-item">
             <p style="font-size: 10px;">今日热议话题</p>
         </li>
-        {% for tid, title in top %}
+        {% for t in top %}
         <li class="list-group-item">
-            <a href="#"> <img src="{{ current_user.avatar_url }}" width="24" height="24" /></a>
-            <small style="color: #999;"><a href="{{ url_for('main.topic_view', tid=tid) }}"> {{ title }}</a></small>
+            <a href="#"> <img src="{{ t.user_avatar }}" width="24" height="24" /></a>
+            <small style="color: #999;"><a href="{{ url_for('main.topic_view', tid=t.id) }}"> {{ t.title }}</a></small>
         </li>
         {% endfor %}
     </ul>

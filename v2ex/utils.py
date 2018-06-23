@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 import re
 import redis
-import time 
+import time
+import json
 from datetime import datetime
 
+from .const import V2EX_NODES_TOP
+from .const import V2EX_TOPIC_TOP
 from .const import V2EX_COMMON_TOP_KEY
 from .const import V2EX_COMMON_TOP_VALUE
 from .const import V2EX_PEOPLE_NUMS
@@ -12,7 +15,7 @@ from .const import V2EX_BROWSE_NUMS
 from .const import V2EX_COMMENT_NUMS
 from .const import ONLINE_LAST_MINUTES
 from .models import User, Notify, Topic, Node, Comment
-from . import db 
+from . import db
 from flask import url_for, request
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView
@@ -27,15 +30,15 @@ def format_time(create_time):
 
 
 def add_user_links_in_content(content_html):
-    """ add the @user with the link of user 
-    
+    """ add the @user with the link of user
+
     :param content_html: markdown格式内容
-    """    
+    """
     for name in re.findall(r"@(.*?)(?:\s|</\w+)", content_html):
         receiver = User.query.filter_by(username=name).first()
         if not receiver:
             continue
-        
+
         content_html = re.sub(
             "@%s" % name,
             '@<a href="%s" class="mention">%s</a>' % (url_for('auth.info', uid=receiver.id), name),
@@ -44,20 +47,20 @@ def add_user_links_in_content(content_html):
 
 
 def add_notify_in_content(content, sender_id, topic_id, comment_id=None, append_id=None):
-    """ 生成评论消息提醒 
+    """ 生成评论消息提醒
     """
     receivers = []
     for name in re.findall(r"@(.*?)(?:\s|$)", content):
         receiver = User.query.filter_by(username=name).first()
         if receiver:
             receivers.append(receiver)
-    
+
     receivers = set(receivers)
     all_notify = []
     for u in receivers:
-        all_notify.append(Notify(sender_id=sender_id, receiver_id=u.id, 
+        all_notify.append(Notify(sender_id=sender_id, receiver_id=u.id,
                                 topic_id=topic_id, comment_id=comment_id, append_id=append_id))
-    
+
     for new in all_notify:
         db.session.add(new)
     db.session.commit()
@@ -66,7 +69,7 @@ def add_notify_in_content(content, sender_id, topic_id, comment_id=None, append_
 class AdminModelView(BaseView):
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_administator:
-            return True 
+            return True
         return False
 
     def inaccessible_callback(self, name, **kwargs):
@@ -80,7 +83,7 @@ class UserView(ModelView):
     column_searchable_list = ["username", "email", "id"]
     column_filters = ["username", "email"]
     column_labels = {
-        "id": "序号", 
+        "id": "序号",
         "username": "用户名",
         "email": "邮箱",
         "avatar_url": "头像链接",
@@ -92,7 +95,7 @@ class UserView(ModelView):
 
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_administator:
-            return True 
+            return True
         return False
 
     def __init__(self, model, session, **kwargs):
@@ -118,7 +121,7 @@ class TopicView(ModelView):
 
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_administator:
-            return True 
+            return True
         return False
 
 
@@ -138,7 +141,7 @@ class TopicAppendView(ModelView):
 
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_administator:
-            return True 
+            return True
         return False
 
 
@@ -148,7 +151,7 @@ class NodeView(ModelView):
     column_labels = {
         "id": "序号",
         "title": "节点名称",
-        "description": "节点描述" 
+        "description": "节点描述"
     }
     column_list = ("id", "title", "description")
     def __init__(self, model, session, **kwargs):
@@ -156,7 +159,7 @@ class NodeView(ModelView):
 
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_administator:
-            return True 
+            return True
         return False
 
 
@@ -165,7 +168,7 @@ class CommentView(ModelView):
     column_filters = ["topic_id", "user_id"]
     column_labels = {
         "id": "序号",
-        "content": "评论内容", 
+        "content": "评论内容",
         "create_time": "评论时间",
         "user_id": "用户ID",
         "topic_id": "话题ID"
@@ -176,7 +179,7 @@ class CommentView(ModelView):
 
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_administator:
-            return True 
+            return True
         return False
 
 
@@ -189,7 +192,7 @@ class NotifyView(ModelView):
 
     def is_accessible(self):
         if current_user.is_authenticated and current_user.is_administator:
-            return True 
+            return True
         return False
 
 
@@ -197,29 +200,34 @@ def get_content_from_redis(key_name, key_type):
     """取top数据"""
     key = V2EX_COMMON_TOP_KEY % key_name
     value = V2EX_COMMON_TOP_VALUE % key_name
-    content = r.llen(key)
+    content = r.llen(V2EX_NODES_TOP) if key_type == 'Node' else r.llen(V2EX_TOPIC_TOP)
     if not content:
         if key_type == 'Node':
             nodes = Node.query.limit(10)
+
             for node in nodes:
-                r.lpush(key, node.id)
-                r.lpush(value, node.title)
-            r.expire(key, 60 * 60)
-            r.expire(key, 60 * 60)
+                node_json = json.dumps(node.to_json())
+                r.lpush(V2EX_NODES_TOP, node_json)
+            r.expire(V2EX_NODES_TOP, 60 * 5)
+
         elif key_type == 'Topic':
             topics = Topic.query.order_by(Topic.reply_num).limit(10)
             for topic in topics:
-                r.lpush(key, topic.id)
-                r.lpush(value, topic.title)
-        r.expire(key, 60 * 30)
-        r.expire(value, 60 * 30)
-    keys = r.lrange(key, 0, 10)
-    values = r.lrange(value, 0, 10)
-    contents = [(tid, title) for tid, title in zip(keys, values)]
-    # if '技术' not in contents:
-    #     contents.insert(0, (0, '技术'))
+                topic_json = json.dumps(topic.to_json())
+                r.lpush(V2EX_TOPIC_TOP, topic_json)
+            r.expire(V2EX_TOPIC_TOP, 60 * 1)
+
+    datas = []
+    if key_type == 'Topic':
+        datas = r.lrange(V2EX_TOPIC_TOP, 0, 10)
+    else:
+        datas = r.lrange(V2EX_NODES_TOP, 0, 10)
+    contents = []
+    for data in datas:
+        content = json.loads(data)
+        contents.append(content)
     return contents
-            
+
 
 def get_tag():
     """ 导航栏标签， 一般情况下是固定的 """
@@ -235,7 +243,7 @@ def get_v2ex_people_num():
         r.expire(V2EX_PEOPLE_NUMS, 60 * 3)
     else:
         peoples = r.get(V2EX_PEOPLE_NUMS)
-    return peoples 
+    return peoples
 
 
 def get_v2ex_topic_num():
@@ -248,7 +256,7 @@ def get_v2ex_topic_num():
         topic_num = r.get(V2EX_TOPIC_NUMS)
     return topic_num
 
-    
+
 def get_v2ex_comment_num():
     key = r.exists(V2EX_COMMENT_NUMS)
     if not key:
@@ -269,7 +277,7 @@ def get_v2ex_browse_num():
     else:
         r.incr(V2EX_BROWSE_NUMS)
         return r.get(V2EX_BROWSE_NUMS)
-        
+
 
 def get_top_hot_node():
     nodes = Node.query.all()
