@@ -5,43 +5,54 @@
 
 
 {% block page_content %}
-<!--
-<div class="panel panel-default col-md-6 col-md-offset-3">
-    <form class="panel-body" role="form" method="post" action="{{ url_for('auth.login',next=request.args.get('next')) }}">
-        <h2 class="text-center" style="margin-bottom:1em"> 登陆</h2>
-        
-        <div class="form-group">
-            <label for="email">邮箱</label>
-            <input class="form-control" id="email" name="email" placeholder="guoweikuang2015@gmail.com" type="text">
-        </div>
-        <div class="form-group">
-            <label for="password">密码</label>
-            <input class="form-control" id="password" name="password" type="password">
-        </div>
-
-        <div class="form-group">
-            <button class="btn btn-default btn-success pull-right">
-                登陆
-            </button>
-        </div>
-    </form>
+<div class="card" id="register-card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" style="border-bottom: 1px solid #ccc!important;margin-bottom: 0px;">
+            <nav aria-label="breadcrumb" id="card-nav">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">V2EX</a></li>
+                <li class="breadcrumb-item active" aria-current="page">登录</li>
+              </ol>
+            </nav>
+        </li>
+        <li class="list-group-item" id="node-nav">
+            <form id="register-form" method="post" action="{{ url_for('auth.login') }}">
+                {{ form.hidden_tag() }}
+                {% if form.errors %}
+                {% for field in form.errors %}
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>错误:{{ form.errors[field][0] }}</strong>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>错误：{{ message }}</strong>
+                </div>
+                {% endfor %}
+              <div class="form-group row">
+                <label for="colFormLabelSm" class="col-2 col-form-label col-form-label text-right">{{ form.email.label }}</label>
+                <div class="col-10">
+                  {{ form.email() }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="colFormLabelSm" class="col-2 col-form-label col-form-label text-right">{{ form.password.label }}</label>
+                <div class="col-10">
+                  {{ form.password() }}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="colFormLabelSm" class="col-2 col-form-label col-form-label text-right"></label>
+                <div class="col-10">
+                  <button type="submit" class="btn btn-secondary btn-sm">登录</button>
+                </div>
+              </div>
+            </form>
+        </li>
+    </ul>
 </div>
--->
-<div class="panel panel-default col-md-6 col-md-offset-3">
-<div class="col-md-4"></div>
-<div class="page-header">
-    <h1>登录</h1>
-</div>
-<!--<form action="/" method="POST">-->
-    <div class="col-md-4">
-        {{ form.csrf_token }}
-       <!-- {{ wtf.form_field(form.email, class="form-control form-style")}} -->
-        {{ wtf.quick_form(form) }}
-        <p><a href="{{ url_for('auth.reset_password') }}">重置密码</a></p>
-        <p><a href="{{ url_for('auth.register') }}">注册</a></p>
-    </div>
-<!--</form>-->
-</div>
-
 {% endblock %}
 

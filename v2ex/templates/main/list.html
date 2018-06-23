@@ -25,6 +25,7 @@
                 <div class="col-md-1"><a href="url_for('auth.info', uid=p.user_id)"><img src="{{ p.user.avatar_url }}" height="48px" width="48px" class="rounded" /></a>  </div>
                 <div class="col-md-10">
                     <span class="post-title"><a href="{{ url_for('main.topic_view', tid=p.id) }}">{{ p.title }}</a></span><br />
+                    <div class="sep5"></div>
                     <span class="post-info">
                         <div class="post-node"><a href="#" id="index-post-node">{{ p.node.title }}</a></div>&nbsp • &nbsp
                         <strong style="color:#4d5256;"><a href="{{ url_for('main.topic_view', tid=p.id) }}"> {{ p.user.username }}</a></strong>
