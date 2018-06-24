@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask import request, url_for, redirect, render_template, current_app, flash,\
-        abort
+from flask import (request, url_for, redirect,
+                   render_template, current_app,
+                   flash, abort, jsonify)
 from flask_login import login_required, current_user
 from flask_paginate import Pagination
 from ..models import db, User, Topic, Node, TopicAppend, Comment, AnonymousUser
@@ -8,14 +9,13 @@ from . import main
 from .. import search1
 from .forms import TopicForm, PostForm, AppendForm, AppendPostForm, CommentForm
 
-from ..utils import add_user_links_in_content, add_notify_in_content, get_content_from_redis, \
-                    get_v2ex_people_num, get_v2ex_topic_num, get_v2ex_comment_num, \
-                    get_v2ex_browse_num, get_top_hot_node, mark_online, get_online_users, \
-                    get_top_topic, get_tag
+from ..utils import (add_user_links_in_content, add_notify_in_content,
+                     get_content_from_redis, get_v2ex_people_num,
+                     get_v2ex_topic_num, get_v2ex_comment_num,
+                     get_v2ex_browse_num, get_top_hot_node,
+                     mark_online, get_online_users,
+                     get_top_topic, get_tag)
 
-
-# import redis
-# r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 @main.context_processor
 def get_online_count():
@@ -113,14 +113,14 @@ def create_topic():
     """
     nodes = Node.query.all()
     form = TopicForm(nodes)
-    if form.validate_on_submit():
-        topic = Topic(title=form.title.data,
-                      content=form.content.data,
-                      user=current_user._get_current_object(),
-                      node_id=form.node.data)
+    if request.method == 'POST':
+        topic = Topic(title=request.form.get('title'),
+                      content=request.form.get('content'),
+                      node_id=request.form.get('node_id'),
+                      user=current_user._get_current_object())
         db.session.add(topic)
         db.session.commit()
-        return redirect(url_for('main.index'))
+        return jsonify({"result": 'ok'})
 
     return render_template('main/create_topic.html', nodes=nodes, form=form)
 
