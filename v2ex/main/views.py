@@ -42,6 +42,17 @@ def index():
     offset = (page - 1) * per_page
     topics = Topic.query.order_by(Topic.create_time.desc()).limit(per_page+offset)
     topics = topics[offset:offset+per_page]
+    for topic in topics:
+        topic_id = topic.id
+        comment = Comment.query.filter_by(topic_id=topic_id).order_by(Comment.create_time.desc()).first()
+        if not comment:
+            topic.last_username = None
+            topic.last_user_id = None
+            continue
+        comment_username = User.query.filter_by(id=comment.user_id).first_or_404()
+        topic.last_username = comment_username.username
+        topic.last_user_id = comment_username.id
+
     if page == 1:
         topics = get_top_topic(topics)
     pagination = Pagination(page=page, total=Topic.query.count(),

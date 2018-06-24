@@ -30,7 +30,9 @@
                         <div class="post-node"><a href="#" id="index-post-node">{{ p.node.title }}</a></div>&nbsp • &nbsp
                         <strong style="color:#4d5256;"><a href="{{ url_for('main.topic_view', tid=p.id) }}"> {{ p.user.username }}</a></strong>
                         &nbsp • &nbsp<script>document.write(moment("{{ p.create_time }}").fromNow());</script>
-
+                        {%  if p.last_username %}
+                        &nbsp • &nbsp 最后回复来自于 <strong style="color:#4d5256;"><a href="{{ url_for('auth.info', uid=p.last_user_id) }}"> {{ p.last_username }}</a></strong>
+                        {% endif %}
                     </span>
                 </div>
                 <div class="col-md-1"><span class="badge badge-pill badge-info">{{ p.reply_num }}</span></div>
