@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask import jsonify, g, request, current_app, url_for
+import arrow
+from datetime import datetime, timedelta
+from flask import jsonify, g, request, current_app
 from flask_restful import Resource, Api, reqparse
 
 from .. import db
@@ -133,7 +135,11 @@ class HotTopicAPI(Resource):
     """ top hot topic api.
 
     """
-    pass
+    def get(self):
+        today = datetime.now()
+        yesterday = today - timedelta(days=1)
+        topics = Topic.query.filter(Topic.create_time.between(yesterday, today))
+        return jsonify({'topic': [topic.to_json() for topic in topics]})
 
 
 class NodeAPI(Resource):
