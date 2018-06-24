@@ -198,8 +198,6 @@ class NotifyView(ModelView):
 
 def get_content_from_redis(key_name, key_type):
     """取top数据"""
-    key = V2EX_COMMON_TOP_KEY % key_name
-    value = V2EX_COMMON_TOP_VALUE % key_name
     content = r.llen(V2EX_NODES_TOP) if key_type == 'Node' else r.llen(V2EX_TOPIC_TOP)
     if not content:
         if key_type == 'Node':
@@ -231,9 +229,10 @@ def get_content_from_redis(key_name, key_type):
 
 def get_tag():
     """ 导航栏标签， 一般情况下是固定的 """
-    tags = ['技术','创意','酷工作','交易','城市','问与答','最热','全部','节点关注']
+    tags = ['技术', '创意', '酷工作', '交易', '城市', '问与答', '最热', '全部', '节点关注']
     tags = [(i+1, title) for i, title in enumerate(tags)]
     return tags
+
 
 def get_v2ex_people_num():
     key = r.exists(V2EX_PEOPLE_NUMS)
