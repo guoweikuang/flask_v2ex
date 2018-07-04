@@ -9,6 +9,7 @@ RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt 
 
 ADD . /home/guoweikuang/app 
+EXPOSE 5000
 
 CMD python manage.py runserver -h 0.0.0.0
 
