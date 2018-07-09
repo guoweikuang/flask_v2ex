@@ -4,18 +4,16 @@
 {% endblock %}
 
 {% block left %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-            <p class="panel-title">
-                未读消息
-            </p>
-        </div>
+    <div class="card">
+    <li class="list-group-item" id="node-nav">
+    <a href="/">V2EX</a>  › 未读消息
+    </li>
     {% if unread %}
-    <ul class="list-group">
-        {% for n in unread %}
-        <div class="list-group-item list-topic-item">
-            <div class="row">
-                <a href="{{ url_for('auth.info', uid = n.sender_id) }}" class="col-xs-1"><img title="{{ current_user.username }}" class="avatar-middle" src="{{current_user.avatar_url}}"></a>
+    {% for n in unread %}
+    <li class="list-group-item">
+        <div class="row">
+            <a href="{{ url_for('auth.info', uid = n.sender_id) }}" class="col-xs-1"><img title="{{ current_user.username }}" class="avatar-middle" src="{{current_user.avatar_url}}"></a>
+
                 <div class="col-xs-10">
                     <div class="reply-author">
                         <a href="{{ url_for('auth.info', uid = n.sender_id) }}">{{current_user.username}}</a>
@@ -23,10 +21,10 @@
                     </div>
                     <div class="reply-content">
                         {% if n.comment_id %}
-                        在评论 
+                        在评论
                         <a href="{{ url_for('main.topic_view', tid = n.topic_id) }}#comment-{{n.comment_id}}" > {{ n.topic.title}}</a>
                         {% elif n.append_id %}
-                        在追加 
+                        在追加
                         <a href="{{ url_for('main.topic_view', tid = n.topic_id) }}#append-{{n.append_id}}" > {{n.topic.title}}</a>
                         {% else %}
                         在话题
@@ -35,47 +33,46 @@
                          中提到你
                     </div>
                 </div>
-            </div>
         </div>
-        {% endfor %}
-    </ul>
+    </li>
+    {% endfor %}
     {% endif %}
-    {% if read %}
-    <div class="panel-heading">
-        <p class="panel-title">
-            已读消息
-        </p>
     </div>
-    <ul class="list-group">
-        {% for n in read %}
-        <div class="list-group-item list-topic-item">
-            <div class="row ">
-                <a href="{{ url_for('auth.info', uid = n.sender_id) }}" class="col-xs-1"><img title="{{current_user.username}}" class="avatar-middle" src="{{current_user.avatar_url }}"></a>
-                <div class="col-xs-10">
+        <div class="card">
+    <li class="list-group-item" id="node-nav">
+    <a href="/">V2EX</a>  › 已读消息
+    </li>
+            {% if read %}
+    {% for n in read %}
+    <li class="list-group-item">
+        <div class="row">
+           <div class="col-md-1"> <a href="{{ url_for('auth.info', uid = n.sender_id) }}"><img title="{{ current_user.username }}" height="48px" width="48px" class="rounded" src="{{current_user.avatar_url}}"></a></div>
+
+                <div class="col-md-10">
                     <div class="reply-author">
-                        <a href="{{ url_for('auth.info', uid = n.sender_id) }}">{{ current_user.username }}</a>
-                        <span class="list-time">{{ n.create_time | format_time }}</span>
+                        <a href="{{ url_for('auth.info', uid = n.sender_id) }}">{{current_user.username}}</a>
+                        <span class="list-time">{{n.create_time | format_time }}</span>
                     </div>
                     <div class="reply-content">
                         {% if n.comment_id %}
                         在评论
-                        <a href="{{ url_for('main.topic_view', tid=n.topic_id) }}#comment-{{n.comment_id}}" > {{n.topic.title}}</a>
+                        <a href="{{ url_for('main.topic_view', tid = n.topic_id) }}#comment-{{n.comment_id}}" > {{ n.topic.title}}</a>
                         {% elif n.append_id %}
                         在追加
                         <a href="{{ url_for('main.topic_view', tid = n.topic_id) }}#append-{{n.append_id}}" > {{n.topic.title}}</a>
                         {% else %}
                         在话题
-                        <a href="{{ url_for('main.topic_view', tid=n.topic_id) }}" > {{n.topic.title}}</a>
+                        <a href="{{ url_for('main.topic_view', tid= n.topic_id) }}" > {{n.topic.title}}</a>
                         {% endif %}
-                        中提到你
+                         中提到你
                     </div>
                 </div>
-            </div>
         </div>
-        {% endfor %}
-    </ul>
+    </li>
+    {% endfor %}
     {% endif %}
-    {% if not unread and not read %}
+
+            {% if not unread and not read %}
         <div class="panel-heading">
         <p class="panel-title">
             没有消息
@@ -83,5 +80,7 @@
     </div>
     {% endif %}
 </div>
+
+
 
 {% endblock %}
