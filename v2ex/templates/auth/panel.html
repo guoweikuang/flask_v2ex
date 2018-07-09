@@ -31,13 +31,27 @@
         </li>
         <li class="list-group-item">
             <div class="row">
-                <div class="col-6" style="padding-top: 6px;">
-                    <a href="#">0条未读提醒</a>
-                </div>
-                <div class="col-6">
-                    <p class="text-right"> <a href="#" id="money"> 00 <img src="{{ url_for('static',filename='img/silver@2x.png') }}" height="16" width="16" /> 00 
+                {% if current_user.is_authenticated %}
+                    {% if current_user.extract_unread_notify() %}
+                    <div class="col-6" style="padding-top: 6px;">
+                        <a href="{{ url_for('auth.notify') }}">{{ current_user.extract_unread_notify() }}条未读提醒</a>
+                    </div>
+                        <div class="col-6">
+                    <p class="text-right"> <a href="#" id="money"> 00 <img src="{{ url_for('static',filename='img/silver@2x.png') }}" height="16" width="16" /> 00
                     <img src="{{ url_for('static',filename='img/bronze@2x.png') }}" height="16" width="16" /> </a></p>
                 </div>
+                    {% else %}
+                        <div class="col-6" style="padding-top: 6px;">
+                    <a href="{{ url_for('auth.notify') }}">0条未读提醒</a>
+                        </div>
+                        <div class="col-6">
+                    <p class="text-right"> <a href="#" id="money"> 00 <img src="{{ url_for('static',filename='img/silver@2x.png') }}" height="16" width="16" /> 00
+                    <img src="{{ url_for('static',filename='img/bronze@2x.png') }}" height="16" width="16" /> </a></p>
+                </div>
+                    {%  endif %}
+
+                {%  endif %}
+
             </div>
         </li>
     </ul>
