@@ -242,3 +242,11 @@ div.header {
     border-bottom: 1px solid #e2e2e2;
     overflow: auto;
 }
+
+a.label-success {
+    color: #F8F8FF;
+}
+
+a.label-warning {
+    color: #F8F8FF;
+}

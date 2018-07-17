@@ -12,6 +12,7 @@ from ..models import Comment
 from ..models import TopicAppend
 from ..email import send_email
 from ..utils import add_notify_in_content
+from ..utils import get_online_users
 from . import api
 from .errors import bad_request, internal_server_error, page_not_found
 from .authentication import auth
@@ -291,11 +292,17 @@ class TimeLineAPI(Resource):
         return jsonify({'topic': [topic.to_json() for topic in topics]})
 
 
+class CommonAPI(Resource):
+    def get(self):
+        common = {}
+        common['current_user'] = len(get_online_users())
+
+
 # 话题相关
 restful_api.add_resource(TopicApi, '/topics')
 restful_api.add_resource(TopicIdApi, "/topic/<int:id>")
-restful_api.add_resource(TopicAppendAPI, "/topic/append/<int:id>")
-restful_api.add_resource(TopicEditAPI, "/topic/edit/<int:id>")
+restful_api.add_resource(TopicAppendAPI, "/topic/<int:id>/append")
+restful_api.add_resource(TopicEditAPI, "/topic/<int:id>/edit")
 restful_api.add_resource(HotTopicAPI, "/topic/hot")
 
 # 节点相关
@@ -311,3 +318,5 @@ restful_api.add_resource(InfoAPI, "/info")
 
 # 用户时间线
 restful_api.add_resource(TimeLineAPI, "/user/<int:id>/timeline")
+
+# 在线人数统计

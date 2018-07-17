@@ -14,6 +14,7 @@ from .const import V2EX_TOPIC_NUMS
 from .const import V2EX_BROWSE_NUMS
 from .const import V2EX_COMMENT_NUMS
 from .const import ONLINE_LAST_MINUTES
+from .const import V2EX_MAX_ONLINE_NUMS
 from .models import User, Notify, Topic, Node, Comment
 from . import db
 from flask import url_for, request
@@ -312,6 +313,22 @@ def get_online_users():
     current = int(time.time()) // 60
     minutes = range(ONLINE_LAST_MINUTES)
     return r.sunion(["v2ex:online:users:%d" % (current - x) for x in minutes])
+
+
+def save_max_online_users_count():
+    """计算最高的同时在线人数.
+
+    :return:
+    """
+    max_online_num = r.get(V2EX_MAX_ONLINE_NUMS)
+    users_num = int(max_online_num) if max_online_num else 0
+    current_user_num = len(get_online_users())
+
+    if current_user_num > users_num:
+        r.set(V2EX_MAX_ONLINE_NUMS, current_user_num)
+        return current_user_num
+    else:
+        return users_num
 
 
 def get_top_topic(topics):

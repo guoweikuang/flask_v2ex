@@ -22,4 +22,6 @@ V2EX_COMMENT_NUMS = "v2ex:comment:nums"
 
 V2EX_BROWSE_NUMS = "v2ex:browse:nums"
 
+V2EX_MAX_ONLINE_NUMS = "v2ex:online:users:max"
+
 ONLINE_LAST_MINUTES = 5

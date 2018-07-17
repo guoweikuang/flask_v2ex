@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import (request, url_for, redirect,
                    render_template, current_app,
-                   flash, abort, jsonify)
+                   flash, abort, jsonify, g)
 from flask_login import login_required, current_user
 from flask_paginate import Pagination
 from ..models import db, User, Topic, Node, TopicAppend, Comment, AnonymousUser
@@ -13,8 +13,8 @@ from ..utils import (add_user_links_in_content, add_notify_in_content,
                      get_content_from_redis, get_v2ex_people_num,
                      get_v2ex_topic_num, get_v2ex_comment_num,
                      get_v2ex_browse_num, get_top_hot_node,
-                     mark_online, get_online_users,
-                     get_top_topic, get_tag)
+                     mark_online, get_online_users, get_tag,
+                     get_top_topic, save_max_online_users_count)
 
 
 @main.context_processor
@@ -72,6 +72,7 @@ def index():
     browse_num = get_v2ex_browse_num()
     top_nodes = get_top_hot_node()
     online_users = get_online_users()
+    g.max_online_num = save_max_online_users_count()
 
     return render_template('main/index.html',
                             pagination=pagination,
