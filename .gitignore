@@ -28,3 +28,6 @@ v2ex/static/ckeditor/
 
 # venv
 venv/
+
+
+whoosh_index
