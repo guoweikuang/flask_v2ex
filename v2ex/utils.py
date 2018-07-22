@@ -15,6 +15,12 @@ from .const import V2EX_BROWSE_NUMS
 from .const import V2EX_COMMENT_NUMS
 from .const import ONLINE_LAST_MINUTES
 from .const import V2EX_MAX_ONLINE_NUMS
+from .const import V2EX_ARTICLE_LIKE_NUM
+from .const import V2EX_ARTICLE_UNLIKE_NUM
+from .const import V2EX_ARTICLE_USER_LIKE
+from .const import V2EX_ARTICLE_USER_UNLIKE
+from .const import V2EX_ARTICLE_UNLIKE
+from .const import V2EX_ARTICLE_LIKE
 from .models import User, Notify, Topic, Node, Comment
 from . import db
 from flask import url_for, request
@@ -344,3 +350,55 @@ def get_top_topic(topics):
         else:
             results.append(topic)
     return results
+
+
+def get_article_like_num(article_id, user_id):
+    key = V2EX_ARTICLE_LIKE_NUM % article_id
+    user_key = V2EX_ARTICLE_USER_LIKE % (article_id, user_id)
+    if r.exists(key):
+        like_num = r.incr(key)
+        r.sadd(V2EX_ARTICLE_LIKE, user_key)
+    else:
+        r.set(key, 0)
+        like_num = r.incr(key)
+        r.sadd(V2EX_ARTICLE_LIKE, user_key)
+    return like_num
+
+
+def get_article_unlike_num(article_id, user_id):
+    key = V2EX_ARTICLE_UNLIKE_NUM % article_id
+    unlike_num = 0
+    user_key = V2EX_ARTICLE_USER_UNLIKE % (article_id, user_id)
+    if r.exists(key):
+        unlike_num = r.decr(key)
+        r.sadd(V2EX_ARTICLE_UNLIKE, user_key)
+    else:
+        r.set(key, 0)
+        unlike_num = r.decr(key)
+        r.sadd(V2EX_ARTICLE_UNLIKE, user_key)
+    return unlike_num
+
+
+def is_has_like(user_id, article_id):
+    key = V2EX_ARTICLE_USER_LIKE % (article_id, user_id)
+    if r.sismember(V2EX_ARTICLE_LIKE, key):
+        return True
+    else:
+        return False
+
+
+def is_has_unlike(user_id, article_id):
+    key = V2EX_ARTICLE_USER_UNLIKE % (article_id, user_id)
+    if r.sismember(V2EX_ARTICLE_UNLIKE, key):
+        return True
+    else:
+        return False
+
+def get_like_num(article_id):
+    key = V2EX_ARTICLE_LIKE_NUM % article_id
+    return r.get(key)
+
+def get_unlike_num(article_id):
+    key = V2EX_ARTICLE_UNLIKE_NUM% article_id
+    num = r.get(key) or 0
+    return num

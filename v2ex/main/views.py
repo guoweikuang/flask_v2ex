@@ -14,7 +14,12 @@ from ..utils import (add_user_links_in_content, add_notify_in_content,
                      get_v2ex_topic_num, get_v2ex_comment_num,
                      get_v2ex_browse_num, get_top_hot_node,
                      mark_online, get_online_users, get_tag,
-                     get_top_topic, save_max_online_users_count)
+                     get_top_topic, save_max_online_users_count,
+                     get_article_like_num, get_article_unlike_num,
+                     is_has_like, get_like_num, get_unlike_num,
+                     is_has_unlike)
+
+from ..const import V2EX_ARTICLE_USER_LIKE
 
 
 @main.context_processor
@@ -173,6 +178,9 @@ def topic_view(tid):
                             record_name="comments",
                             CSS_FRAMEWORK="bootstrap",
                             bs_version=3)
+    g.like = int(get_like_num(tid))
+    print(get_unlike_num(tid))
+    g.unlike = int(get_unlike_num(tid))
 
     form = CommentForm()
     if not current_user.is_anonymous:
@@ -298,6 +306,35 @@ def search(keywords):
                     CSS_FRAMEWORK="bootstrap",
                     bs_version=3)
     return render_template("main/index.html", topics=topics, pagination=pagination)
+
+
+@main.route('/like', methods=['GET', 'POST'])
+def like():
+    data = request.get_json()
+    if data:
+        like_type = data.get('mz')
+        article_id = data.get('num')
+        if article_id:
+            article_id = int(article_id)
+            if like_type == 'like':
+                flag = data.get('flag')
+                user_id = current_user._get_current_object().id
+                like_num = get_like_num(article_id)
+                if is_has_like(user_id, article_id):
+                    return jsonify({"result": like_num, 'alert': 'failed'})
+                else:
+                    like_num = get_article_like_num(article_id, user_id)
+                    return jsonify({'result': like_num, 'alert': 'success'})
+            else:
+                user_id = current_user._get_current_object().id
+                unlike_num = get_unlike_num(article_id)
+                if is_has_unlike(user_id, article_id):
+                    return jsonify({"result": unlike_num, 'alert': 'failed'})
+                else:
+                    unlike_num = get_article_unlike_num(article_id, user_id)
+                    return jsonify({"result": unlike_num, 'alert': 'success'})
+
+
 
 
 @main.route('/topic/test', methods=['GET', 'POST'])

@@ -12,17 +12,25 @@
                     <p style="margin-bottom: 10px"><a href="/">V2EX</a> › <a href="{{ url_for('main.index') }}">{{ topic.node.title }}</a></p>
                     <h1 style="font-size: 24px;">{{ topic.title }}</h1>
                     <p style="color: #999;margin-bottom: 0px;font-size: smaller">
+
+                        <span class="badge badge-light" id="{{ topic.id }}" value="{{ current_user.id }}" name="like"> <i class="fa fa-thumbs-o-up">  {{ g.like }}</i></span> ·
+                        <span class="badge badge-light" id="{{ topic.id }}" value="{{ current_user.id }}" name="unlike"><i class="fa fa-thumbs-o-down">  {{ g.unlike }}</i></span> ·
                         <a href="{{ url_for('auth.info', uid=topic.user_id) }}">
                             {{ topic.user.username }}</a> · <script>document.write(moment("{{ topic.create_time }}").fromNow());</script> · {{ topic.click_num }} 次点击
                         {% if current_user.id == topic.user_id %}
                          ·
-					    <button type="button" class="btn btn-info btn-sm">
-                         <a class="label-success label" href="{{ url_for('main.topic_append', tid = topic.id) }}">追加内容</a>
-                        </button>
+{#					    <button type="button" class="btn btn-info btn-sm">#}
+{#                         <a class="label-success label" href="{{ url_for('main.topic_append', tid = topic.id) }}">追加内容</a>#}
+{#                        </button>#}
+                            <span class="badge badge-info"><a class="label-success label" href="{{ url_for('main.topic_append', tid = topic.id) }}">追加内容</a></span>
                              ·
-                            <button type="button" class="btn btn-success btn-sm">
-					    <a class="label-warning label" href="{{ url_for('main.topic_edit', tid=topic.id) }}">编辑</a>
-                            </button>
+{#                            <button type="button" class="btn btn-success btn-sm">#}
+{#					    <a class="label-warning label" href="{{ url_for('main.topic_edit', tid=topic.id) }}">编辑</a>#}
+{#                            </button>#}
+                            <span class="badge badge-success">
+                                <a class="label-warning label" href="{{ url_for('main.topic_edit', tid=topic.id) }}">编辑</a>
+                            </span>
+
                     {% endif %}
                     </p>
 
@@ -112,4 +120,62 @@
 <br />
 <script src="{{ url_for('static', filename='js/previewer.js') }}"></script>
 <script src="{{ url_for('static', filename='js/mention.js') }}"></script>
+    <script>
+        var data = {
+        "flag": "False",
+        "mz":"zan",
+        "num": 0,
+        };
+        $(document).ready(function () {
+            $("#submit").addClass("btn btn-info");
+            $("span").unbind('click').bind('click',function () {
+                 var article_id =$(this).attr("id");
+                 var another = $(this).attr("value");
+                 var like_type = $(this).attr("name");
+                 if(like_type==='like'){
+                     data.flag="True";
+                     data.num =article_id;
+                     data.mz = 'like';
+                     data.user_id = another;
+                     $.ajax({
+                        type: "POST",
+                        url: "/like",
+                        cache: false,
+                        data: JSON.stringify(data),
+                        contentType:'application/json;charset=UTF-8',
+                        dataType:'json',
+                        async: true,
+                        success:function(data){
+                            if(data.alert=="success"){
+                                $("[name='like']").html("赞"+ data.result);
+                            }
+                            else if(data.alert=="failed") alert("你已经点过赞了");
+                        },
+                        error:function (xhr,type) {
+                        }
+                    });
+                 }
+                 else{
+                     data.flag="True";
+                     data.num = another;
+                     data.mz="unlike";
+                     $.ajax({
+                         type: "POST",
+                         url: "/like",
+                         data: JSON.stringify(data),
+                         contentType:'application/json;charset=UTF-8',
+                        dataType:'json',
+                        success:function(data){
+                            if(data.alert=="success"){
+                                $("[name='unlike']").html("踩"+ data.result);
+                            }
+                            else if(data.alert=="failed") alert("你已经踩过了");
+                        },
+                        error:function (xhr,type) {
+                        }
+                     });
+                 }
+            });
+        });
+    </script>
 {% endblock %}

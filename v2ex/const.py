@@ -24,4 +24,16 @@ V2EX_BROWSE_NUMS = "v2ex:browse:nums"
 
 V2EX_MAX_ONLINE_NUMS = "v2ex:online:users:max"
 
+V2EX_ARTICLE_LIKE_NUM = "v2ex:article:%s:like"
+
+V2EX_ARTICLE_UNLIKE_NUM = "v2ex:article:%s:unlike"
+
+V2EX_ARTICLE_USER_LIKE = "article:%s:user:%s:like"
+
+V2EX_ARTICLE_USER_UNLIKE = "article:%s:user:%s:unlike"
+
+V2EX_ARTICLE_LIKE = "v2ex:article:like"
+
+V2EX_ARTICLE_UNLIKE = "v2ex:article:unlike"
+
 ONLINE_LAST_MINUTES = 5
