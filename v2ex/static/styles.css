@@ -254,3 +254,18 @@ a.label-warning {
 li.guo {
     font-size: 12px;
 }
+
+#Logo {
+    width: 94px;
+    height: 30px;
+    background-image: url(/static/img/v2ex@2x.png);
+    background-size: 94px 30px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    text-shadow: 0 0 black;
+}
+
+td, th {
+    display: table-cell;
+    vertical-align: inherit;
+}

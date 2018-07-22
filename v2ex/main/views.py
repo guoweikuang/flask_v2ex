@@ -179,7 +179,6 @@ def topic_view(tid):
                             CSS_FRAMEWORK="bootstrap",
                             bs_version=3)
     g.like = int(get_like_num(tid))
-    print(get_unlike_num(tid))
     g.unlike = int(get_unlike_num(tid))
 
     form = CommentForm()

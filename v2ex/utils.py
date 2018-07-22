@@ -396,7 +396,8 @@ def is_has_unlike(user_id, article_id):
 
 def get_like_num(article_id):
     key = V2EX_ARTICLE_LIKE_NUM % article_id
-    return r.get(key)
+    num = r.get(key)
+    return num if num else 0
 
 def get_unlike_num(article_id):
     key = V2EX_ARTICLE_UNLIKE_NUM% article_id
