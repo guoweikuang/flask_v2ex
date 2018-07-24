@@ -4,7 +4,8 @@
 
 {% block scripts %}
 {{ super() }}
-{{ moment.include_moment() }}
+    {{ moment.include_moment(local_js="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js") }}
+{#{{ moment.include_moment() }}#}
 {{moment.lang('zh-CN')}}
 {% endblock %}
 
@@ -36,14 +37,25 @@
 
 <nav class="navbar navbar-expand navbar-light">
   <div class="container">
-      <a class="navbar-brand" href="/">V2EX</a>
+    <tr>
+    <td width="110" align="left">
+      <a href="/"><div id="Logo"></div></a>
+    </td>
+    </tr>
+{#      <a class="navbar-brand" href="/">V2EX</a>#}
 {#      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
 {#        <span class="navbar-toggler-icon"></span>#}
 {#      </button>#}
-        <form class="form-inline mr-auto mt-2 mt-lg-0" id="nav-search">
-          <input id="nav-search-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+{#        <form class="form-inline mr-auto mt-2 mt-lg-0" id="nav-search">#}
+{#          <input id="nav-search-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
 {#          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-        </form>
+{#        </form>#}
+      <form class="form-inline mr-auto mt-2 my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">搜索</button>
+    </form>
+
+
         <ul class="navbar-nav">
           <li class="nav-item active">
             <a class="nav-link" href="/">首页 <span class="sr-only">(current)</span></a>
