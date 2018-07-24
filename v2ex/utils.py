@@ -400,6 +400,6 @@ def get_like_num(article_id):
     return num if num else 0
 
 def get_unlike_num(article_id):
-    key = V2EX_ARTICLE_UNLIKE_NUM% article_id
-    num = r.get(key) or 0
-    return num
+    key = V2EX_ARTICLE_UNLIKE_NUM % article_id
+    num = r.get(key)
+    return num if num else 0

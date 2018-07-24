@@ -269,3 +269,11 @@ td, th {
     display: table-cell;
     vertical-align: inherit;
 }
+
+span[name="like"] {
+    cursor: pointer;
+}
+
+span[name="unlike"] {
+    cursor: pointer;
+}

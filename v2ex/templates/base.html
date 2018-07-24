@@ -4,7 +4,8 @@
 
 {% block scripts %}
 {{ super() }}
-{{ moment.include_moment() }}
+    {{ moment.include_moment(local_js="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js") }}
+{#{{ moment.include_moment() }}#}
 {{moment.lang('zh-CN')}}
 {% endblock %}
 
