@@ -1,4 +1,17 @@
 <div class="card">
+    {% if node_title %}
+            <li class="list-group-item">
+                <div class="fr f12">
+                    <p>
+                        <span>话题总数</span>
+                    <strong>{{ node.topics.count() }}</strong>
+                    </p>
+                </div>
+                <ul class="nav" id="node">
+                    <p style="margin-bottom: 10px"><a href="/">V2EX</a> › {{ node_title }}</p>
+                </ul>
+            </li>
+    {% else %}
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <ul class="nav" id="post-type">
@@ -19,6 +32,8 @@
                 {% endfor %}
             </ul>
         </li>
+    {% endif %}
+
         {% for p in topics %}
         <li class="list-group-item">
             <div class="row">
@@ -27,7 +42,7 @@
                     <span class="post-title"><a href="{{ url_for('main.topic_view', tid=p.id) }}">{{ p.title }}</a></span><br />
                     <div class="sep5"></div>
                     <span class="post-info">
-                        <div class="post-node"><a href="#" id="index-post-node">{{ p.node.title }}</a></div>&nbsp • &nbsp
+                        <div class="post-node"><a href="{{ url_for('main.node_view', nid=p.node.id) }}" id="index-post-node">{{ p.node.title }}</a></div>&nbsp • &nbsp
                         <strong style="color:#4d5256;"><a href="{{ url_for('main.topic_view', tid=p.id) }}"> {{ p.user.username }}</a></strong>
                         &nbsp • &nbsp<script>document.write(moment("{{ p.create_time }}").fromNow());</script>
                         {%  if p.last_username %}

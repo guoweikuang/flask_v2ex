@@ -4,30 +4,31 @@
 {% endblock %}
 
 {% block left %}
-<div class="panel panel-default">
-    <div class="panel-body row">
-        <div class="col-xs-2">
-            <img class="avatar-large" src="{{ user.avatar_url }}" title="{{user.username}}"/>
-        </div>
-        <div class="col-xs-10">
-            <p class="list-post-title"><strong>@{{user.username}} </strong></p>
-            <p class="list-meta">第 {{user.id}} 个用户, {{user.join_time | format_time }} 加入</p>
-            {% if user.website %}
-            <p class="list-meta"> 个人站点：
-            <a target="_blank" href="{{ user.website }}">{{user.website}}</a>
-            </p>
-            {% endif %}
-            {% if not current_user.is_following(user) %}
-                <a href="{{ url_for('auth.follow', username=user.username) }}"
-               class="btn btn-primary">关注</a>
-            {% else %}
-            <a href="{{ url_for('auth.unfollow', username=user.username) }}"
-               class="btn btn-primary">取消关注</a>
-            {% endif %}
-
-        </div>
+    <div class="card">
+     <ul class="list-group list-group-flush">
+         <li class="list-group-item">
+         <div class="row">
+             <div class="col-lg-2">
+                 <img src="{{ user.avatar_url }}" height="72px" width="72px" class="rounded"  title="{{ user.username }}" />
+             </div>
+             <div class="col-lg-10">
+                 <p class="list-post-title"><strong>@{{user.username}} </strong></p>
+                 <p class="list-meta">第 {{user.id}} 个用户, {{user.join_time | format_time }} 加入</p>
+                 {% if user.website %}
+                    <p class="list-meta"> 个人站点：
+                        <a target="_blank" href="{{ user.website }}">{{user.website}}</a>
+                    </p>
+                 {% endif %}
+                 {% if not current_user.is_following(user) %}
+                    <a href="{{ url_for('auth.follow', username=user.username) }}" class="btn btn-primary">关注</a>
+                 {% else %}
+                     <a href="{{ url_for('auth.unfollow', username=user.username) }}" class="btn btn-primary">取消关注</a>
+                 {% endif %}
+             </div>
+         </div>
+         </li>
+     </ul>
     </div>
-</div>
 {% include 'main/list.html' %}
 {% endblock %}
 
