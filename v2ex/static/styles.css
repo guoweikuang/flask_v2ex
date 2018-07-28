@@ -277,3 +277,12 @@ span[name="like"] {
 span[name="unlike"] {
     cursor: pointer;
 }
+
+.fr {
+    float: right;
+    text-align: right;
+}
+
+.f12 {
+    font-size: 16px;
+}
