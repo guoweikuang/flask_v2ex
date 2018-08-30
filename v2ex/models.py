@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import hashlib
 import arrow
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,7 +29,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     avatar_url = db.Column(
         db.String(128),
-        default="http://www.gravatar.com/avatar/")
+        default="https://cdn.v2ex.com/gravatar/")
     join_time = db.Column(db.DateTime(), default=datetime.utcnow())
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow())
     is_superuser = db.Column(db.Boolean, default=False)
@@ -107,6 +108,16 @@ class User(UserMixin, db.Model):
             return notifies.count()
         else:
             return 0
+
+    def gravatar_hash(self):
+        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+
+    def genrate_gravatar_url(self, size=10, default='identicon', rating='g'):
+        url = "https://cdn.v2ex.com/gravatar/"
+        hash = self.gravatar_hash()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+            url=url, hash=hash, size=size, default=default, rating=rating)
+
 
     # def hot_topic(self):
     #     """获取top10话题"""
