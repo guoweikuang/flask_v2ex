@@ -4,7 +4,7 @@
         <li class="list-group-item" style="border-bottom: solid 1px #ccc;padding-bottom: 0px;">
             <div class="row">
                 <div class="col-3">
-                    <a href="#"><img class="rounded" src="{{ current_user.avatar_url }}" height="48px" width="48px" /></a>
+                    <a href="#"><img class="rounded" src="{{ current_user.genrate_gravatar_url(size=256) }}" height="48px" width="48px" /></a>
                 </div>
                 <div class="col-9" style="color: #4d5256; font-size: 18px;padding-top: 12px">
                     <strong><a href="#"> {{ current_user.username }}</a></strong>
