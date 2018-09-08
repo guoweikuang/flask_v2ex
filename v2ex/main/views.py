@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+~~~~~~~~~~~~~~~~~~~~~~
+v2ex main moudle
+
+@author guoweikuang
+
+"""
 from flask import (request, url_for, redirect,
                    render_template, current_app,
                    flash, abort, jsonify, g)
@@ -33,13 +40,13 @@ def get_online_count():
 
 @main.before_request
 def mark_current_user_online():
+    """count current user online."""
     mark_online(request.remote_addr)
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     """ index page view.
-
     :return:
     """
     per_page = current_app.config['PER_PAGE']
@@ -49,7 +56,8 @@ def index():
     topics = topics[offset:offset+per_page]
     for topic in topics:
         topic_id = topic.id
-        comment = Comment.query.filter_by(topic_id=topic_id).order_by(Comment.create_time.desc()).first()
+        comment = Comment.query.filter_by(topic_id=topic_id).order_by(
+            Comment.create_time.desc()).first()
         if not comment:
             topic.last_username = None
             topic.last_user_id = None
@@ -61,10 +69,10 @@ def index():
     if page == 1:
         topics = get_top_topic(topics)
     pagination = Pagination(page=page, total=Topic.query.count(),
-                        per_page=per_page,
-                        record_name='topics',
-                        CSS_FRAMEWORK='bootstrap',
-                        bs_version=4)
+                            per_page=per_page,
+                            record_name='topics',
+                            CSS_FRAMEWORK='bootstrap',
+                            bs_version=4)
 
     top = get_content_from_redis(key_name="topic", key_type="Topic")
     nodes = Node.query.all()
@@ -80,11 +88,11 @@ def index():
     g.max_online_num = save_max_online_users_count()
 
     return render_template('main/index.html',
-                            pagination=pagination,
-                            topics=topics, nodes=nodes, top=top,
-                            people_num=people_num, topic_num=topic_num,
-                            browse_num=browse_num, comment_num=comment_num,
-                            top_nodes=top_nodes, online=online_users)
+                           pagination=pagination,
+                           topics=topics, nodes=nodes, top=top,
+                           people_num=people_num, topic_num=topic_num,
+                           browse_num=browse_num, comment_num=comment_num,
+                           top_nodes=top_nodes, online=online_users)
 
 
 @main.route('/topic/hot', methods=['GET', 'POST'])
@@ -114,11 +122,11 @@ def hot():
     online_users = get_online_users()
 
     return render_template('main/index.html',
-                            pagination=pagination,
-                            topics=topics, nodes=nodes, top=top,
-                            topic_num=topic_num, people_num=people_num,
-                            browse_num=browse_num, comment_num=comment_num,
-                            top_nodes=top_nodes, online=online_users)
+                           pagination=pagination,
+                           topics=topics, nodes=nodes, top=top,
+                           topic_num=topic_num, people_num=people_num,
+                           browse_num=browse_num, comment_num=comment_num,
+                           top_nodes=top_nodes, online=online_users)
 
 
 @main.route('/topic/create', methods=['GET', 'POST'])
@@ -198,7 +206,7 @@ def topic_view(tid):
     else:
         flash("请先登录后评论")
     return render_template('main/topic.html', topic=topic, pagination=pagination,
-                            comments=comments, form=form)
+                           comments=comments, form=form)
 
 
 @main.route('/topic/append/<int:tid>', methods=['GET', 'POST'])
@@ -273,15 +281,15 @@ def node_view(nid):
         Topic.create_time.desc()).limit(per_page+offset)
     topics = topics[offset:offset+per_page]
     pagination = Pagination(page=page,
-                        total=Topic.query.filter_by(node_id=nid).count(),
-                        per_page=per_page,
-                        record_name="comments",
-                        CSS_FRAMEWORK="bootstrap",
-                        bs_version=3)
+                            total=Topic.query.filter_by(node_id=nid).count(),
+                            per_page=per_page,
+                            record_name="comments",
+                            CSS_FRAMEWORK="bootstrap",
+                            bs_version=3)
     return render_template('main/node_view.html',
-                            topics=topics,
-                            node_title=node_title,
-                            pagination=pagination, node=node)
+                           topics=topics,
+                           node_title=node_title,
+                           pagination=pagination, node=node)
 
 
 @main.route('/search/<keywords>')
@@ -299,11 +307,11 @@ def search(keywords):
     offset = (page-1) * per_page
     topics = results[offset:offset+per_page]
     pagination = Pagination(page=page,
-                    total=results.count(),
-                    per_page=per_page,
-                    record_name="comments",
-                    CSS_FRAMEWORK="bootstrap",
-                    bs_version=3)
+                            total=results.count(),
+                            per_page=per_page,
+                            record_name="comments",
+                            CSS_FRAMEWORK="bootstrap",
+                            bs_version=3)
     return render_template("main/index.html", topics=topics, pagination=pagination)
 
 
@@ -332,8 +340,6 @@ def like():
                 else:
                     unlike_num = get_article_unlike_num(article_id, user_id)
                     return jsonify({"result": unlike_num, 'alert': 'success'})
-
-
 
 
 @main.route('/topic/test', methods=['GET', 'POST'])

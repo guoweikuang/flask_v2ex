@@ -221,7 +221,7 @@ class Topic(db.Model):
             "click_num": self.click_num,
             "reply_num": self.reply_num,
             "user_id": self.user_id,
-            "user_avatar": self.user.avatar_url,
+            "user_avatar": self.user.genrate_gravatar_url(size=256),
         }
 
     def __repr__(self):
