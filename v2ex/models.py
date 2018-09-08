@@ -207,10 +207,17 @@ class Topic(db.Model):
     def on_change_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-                        'h1', 'h2', 'h3', 'h4', 'h5', 'p']
+                        'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'img']
+        attrs = {
+            '*': ['class', 'style'],
+            'a': ['href', 'rel'],
+            'img': ['alt', 'src'],
+        }
+        styles = ['height', 'width']
         target.content_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
-            tags=allowed_tags, strip=True))
+            tags=allowed_tags, strip=True,
+            attributes=attrs, styles=styles))
 
     def to_json(self):
         return {
