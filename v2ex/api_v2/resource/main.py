@@ -18,6 +18,7 @@ from ...models import TopicAppend
 from ...models import Topic
 from ...models import Comment
 from ...utils import add_notify_in_content
+from ..common.authentication import auth
 
 
 class TopicApi(Resource):

@@ -155,6 +155,16 @@ class User(UserMixin, db.Model):
             'username_url': self.username_url,
         }
 
+    def to_viewdict(self):
+        """用户公开的信息（所有人可以获取）"""
+        return {
+            'id': self.id,
+            'username': self.username,
+            'avatar_url': self.avatar_url,
+            'join_time': arrow.get(self.join_time).timestamp,
+            'username_url': self.genrate_gravatar_url(size=256),
+        }
+
     def __repr__(self):
         return '<User %s>' % self.username
 
