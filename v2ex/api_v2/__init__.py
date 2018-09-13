@@ -2,6 +2,7 @@
 from flask import Blueprint
 
 
-api = Blueprint('api_v2', __name__)
+api_v2 = Blueprint('api_v2', __name__)
 
 from .resource import main, auth
+from .app import *
