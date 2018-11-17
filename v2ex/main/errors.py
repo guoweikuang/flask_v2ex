@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from request import jsonify, render_template
+from flask import jsonify, render_template
 from . import main
 
 
