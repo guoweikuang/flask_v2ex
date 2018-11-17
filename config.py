@@ -43,6 +43,7 @@ class Config(object):
 
     UPLOAD_FOLDER = os.path.join(basedir, 'v2ex/static/uploads')
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+    AVATARS_SAVE_PATH = os.path.join(basedir, 'v2ex/static/img')
 
     # 搜索
     WHOOSH_BASE = "whoosh_index"

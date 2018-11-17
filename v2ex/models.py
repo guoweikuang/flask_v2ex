@@ -5,8 +5,9 @@ import arrow
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app
+from flask import current_app, send_from_directory
 from flask_login import UserMixin, AnonymousUserMixin
+from flask_avatars import Identicon
 from markdown import markdown
 import bleach
 
@@ -118,7 +119,16 @@ class User(UserMixin, db.Model):
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
 
+    @property
+    def gravatar(self):
+        return self.avatar_url
 
+    @gravatar.setter
+    def gravatar(self, text="default"):
+        avatar = Identicon()
+        filename = avatar.generate(text=text)
+        img_url = send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
+        self.avatar_url = img_url
     # def hot_topic(self):
     #     """获取top10话题"""
     #     # TODO: redis 存top，根据策略来更新话题
