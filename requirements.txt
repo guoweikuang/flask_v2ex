@@ -4,7 +4,7 @@ aniso8601==2.0.0
 arrow==0.12.1
 astroid==1.5.3
 Babel==2.5.1
-bleach==2.1.1
+bleach==3.1.1
 blinker==1.4
 certifi==2018.1.18
 chardet==3.0.4
